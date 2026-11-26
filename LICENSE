@@ -1,0 +1,32 @@
+MD SCANNER — Proprietary Source-Available License
+
+Copyright (c) 2026 MarcelAlle.Dev. All rights reserved.
+
+This repository is published for transparency, review and evaluation purposes.
+
+1. Permitted use
+   You may view and read the source code, and build it locally for the sole
+   purpose of personal, non-commercial evaluation.
+
+2. Restrictions
+   Without prior written permission from MarcelAlle.Dev, you may not:
+   a. distribute, publish, sublicense or sell this software or any derivative
+      work, in source or binary form, on any application store or channel;
+   b. remove, bypass or alter the advertising, subscription or licensing
+      mechanisms of the software;
+   c. use the names "MD SCANNER" or "MarcelAlle.Dev", or the associated logos
+      and visual identity, to identify another product or service.
+
+3. Third-party components
+   This software depends on third-party open-source packages, each distributed
+   under its own license. Those licenses remain applicable to the corresponding
+   components and are listed in docs/architecture.md.
+
+4. No warranty
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE.
+
+For licensing requests: https://github.com/marcelalle-dev
