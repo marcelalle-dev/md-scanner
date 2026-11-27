@@ -661,4 +661,24 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get wipeDone => 'Toutes vos données ont été effacées';
+
+  @override
+  String get placeHint =>
+      'Touchez la page ou faites glisser le cadre pour choisir l\'emplacement.';
+
+  @override
+  String get placeUnavailable =>
+      'L\'aperçu de cette page est indisponible : l\'emplacement par défaut sera utilisé.';
+
+  @override
+  String folderCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count documents',
+      one: '1 document',
+      zero: 'Aucun document',
+    );
+    return '$_temp0';
+  }
 }

@@ -16,6 +16,7 @@ import 'package:md_scanner/core/widgets/feedback.dart';
 import 'package:md_scanner/core/widgets/progress.dart';
 import 'package:md_scanner/features/ads/data/ads_service.dart';
 import 'package:md_scanner/features/pdf_tools/domain/pdf_models.dart';
+import 'package:md_scanner/features/pdf_tools/presentation/page_placement.dart';
 import 'package:md_scanner/features/pdf_tools/presentation/pdf_tool.dart';
 import 'package:md_scanner/features/pdf_tools/presentation/pdf_tool_runner.dart';
 import 'package:md_scanner/features/pdf_tools/presentation/signature_pad.dart';
@@ -37,8 +38,7 @@ class _PdfToolScreenState extends ConsumerState<PdfToolScreen> {
   final TextEditingController _text = TextEditingController();
   final TextEditingController _page = TextEditingController();
   final GlobalKey<SignaturePadState> _signature = GlobalKey();
-  int _verticalPosition = 2;
-  bool _signOnRight = true;
+  PdfNormalizedRect? _placement;
   PdfCompressionLevel _level = PdfCompressionLevel.balanced;
   int _quarterTurns = 1;
   String? _textError;
@@ -156,9 +156,8 @@ class _PdfToolScreenState extends ConsumerState<PdfToolScreen> {
         quarterTurns: _quarterTurns,
         inputPassword: inputPassword,
         pageNumber: pageNumber,
-        verticalPosition: _verticalPosition,
         signaturePath: signaturePath,
-        signOnRight: _signOnRight,
+        placement: _placement,
       );
       result = await runWithProgress(
         context,
@@ -295,21 +294,8 @@ class _PdfToolScreenState extends ConsumerState<PdfToolScreen> {
             TextField(
               controller: _page,
               keyboardType: TextInputType.number,
+              onChanged: (_) => setState(() {}),
               decoration: InputDecoration(labelText: l10n.toolPage),
-            ),
-          ],
-          if (_tool == PdfTool.addText) ...[
-            SectionHeader(title: l10n.toolPosition),
-            SegmentedButton<int>(
-              segments: [
-                ButtonSegment(value: 0, label: Text(l10n.posTop)),
-                ButtonSegment(value: 1, label: Text(l10n.posMiddle)),
-                ButtonSegment(value: 2, label: Text(l10n.posBottom)),
-              ],
-              selected: {_verticalPosition},
-              showSelectedIcon: false,
-              onSelectionChanged: (value) =>
-                  setState(() => _verticalPosition = value.first),
             ),
           ],
           if (_tool == PdfTool.sign) ...[
@@ -321,16 +307,14 @@ class _PdfToolScreenState extends ConsumerState<PdfToolScreen> {
               ),
             ),
             SignaturePad(key: _signature),
-            const SizedBox(height: AppSpacing.sm),
-            SegmentedButton<bool>(
-              segments: [
-                ButtonSegment(value: false, label: Text(l10n.signLeft)),
-                ButtonSegment(value: true, label: Text(l10n.signRight)),
-              ],
-              selected: {_signOnRight},
-              showSelectedIcon: false,
-              onSelectionChanged: (value) =>
-                  setState(() => _signOnRight = value.first),
+          ],
+          if (_needsPage && _inputs.isNotEmpty) ...[
+            SectionHeader(title: l10n.toolPosition),
+            PagePlacement(
+              pdfPath: _inputs.first.path,
+              pageNumber: int.tryParse(_page.text.trim()),
+              forSignature: _tool == PdfTool.sign,
+              onChanged: (rect) => _placement = rect,
             ),
           ],
           if (_tool == PdfTool.compress) ...[

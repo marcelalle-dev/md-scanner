@@ -27,8 +27,9 @@ class IdScannerScreen extends ConsumerStatefulWidget {
 
 class _IdScannerScreenState extends ConsumerState<IdScannerScreen> {
   final String _sessionId = const Uuid().v4();
-  late final IdScanService _service = ref.read(idScanServiceProvider);
-  late final PlatformBridge _bridge = ref.read(platformBridgeProvider);
+  // Resolved in initState: `ref` can no longer be read once dispose runs.
+  late final IdScanService _service;
+  late final PlatformBridge _bridge;
   IdSide? _front;
   IdSide? _back;
   IdFields? _fields;
@@ -38,6 +39,8 @@ class _IdScannerScreenState extends ConsumerState<IdScannerScreen> {
   @override
   void initState() {
     super.initState();
+    _service = ref.read(idScanServiceProvider);
+    _bridge = ref.read(platformBridgeProvider);
     // Identity documents must not end up in screenshots or the recents list.
     _bridge.setSecureWindow(secure: true);
   }

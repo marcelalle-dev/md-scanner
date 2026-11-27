@@ -261,5 +261,15 @@
   "wipeConfirmMessage": "Tous vos documents, y compris ceux du coffre-fort, les historiques, le code PIN et vos réglages seront supprimés définitivement de cet appareil. Cette action est irréversible.\n\nVotre abonnement Premium, géré par Google Play, n'est pas affecté.",
   "wipeConfirm": "Tout effacer",
   "wipeRunning": "Effacement en cours…",
-  "wipeDone": "Toutes vos données ont été effacées"
+  "wipeDone": "Toutes vos données ont été effacées",
+  "placeHint": "Touchez la page ou faites glisser le cadre pour choisir l'emplacement.",
+  "placeUnavailable": "L'aperçu de cette page est indisponible : l'emplacement par défaut sera utilisé.",
+  "folderCount": "{count, plural, =0{Aucun document} =1{1 document} other{{count} documents}}",
+  "@folderCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

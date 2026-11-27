@@ -301,9 +301,7 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen> {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        subtitle: Text(
-                          '${folder.documentCount} · ${l10n.documentsTitle}',
-                        ),
+                        subtitle: Text(l10n.folderCount(folder.documentCount)),
                         onTap: () => context.push(AppRoutes.folder(folder.id)),
                         trailing: PopupMenuButton<_FolderAction>(
                           tooltip: context.coreL10n.actionMore,

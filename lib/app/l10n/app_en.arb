@@ -202,5 +202,8 @@
   "wipeConfirmMessage": "All your documents, including those in the vault, the histories, the PIN and your settings will be permanently deleted from this device. This cannot be undone.\n\nYour Premium subscription, managed by Google Play, is not affected.",
   "wipeConfirm": "Erase everything",
   "wipeRunning": "Erasing…",
-  "wipeDone": "All your data has been erased"
+  "wipeDone": "All your data has been erased",
+  "placeHint": "Tap the page or drag the frame to choose the position.",
+  "placeUnavailable": "The preview of this page is unavailable: the default position will be used.",
+  "folderCount": "{count, plural, =0{No documents} =1{1 document} other{{count} documents}}"
 }

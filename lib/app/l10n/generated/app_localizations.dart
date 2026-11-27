@@ -1315,6 +1315,24 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Toutes vos données ont été effacées'**
   String get wipeDone;
+
+  /// No description provided for @placeHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Touchez la page ou faites glisser le cadre pour choisir l\'emplacement.'**
+  String get placeHint;
+
+  /// No description provided for @placeUnavailable.
+  ///
+  /// In fr, this message translates to:
+  /// **'L\'aperçu de cette page est indisponible : l\'emplacement par défaut sera utilisé.'**
+  String get placeUnavailable;
+
+  /// No description provided for @folderCount.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucun document} =1{1 document} other{{count} documents}}'**
+  String folderCount(int count);
 }
 
 class _AppLocalizationsDelegate

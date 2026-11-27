@@ -39,12 +39,15 @@ class VaultScreen extends ConsumerStatefulWidget {
 
 class _VaultScreenState extends ConsumerState<VaultScreen>
     with WidgetsBindingObserver {
-  late final VaultLockController _lock = ref.read(vaultLockProvider.notifier);
-  late final PlatformBridge _bridge = ref.read(platformBridgeProvider);
+  // Resolved in initState: `ref` can no longer be read once dispose runs.
+  late final VaultLockController _lock;
+  late final PlatformBridge _bridge;
 
   @override
   void initState() {
     super.initState();
+    _lock = ref.read(vaultLockProvider.notifier);
+    _bridge = ref.read(platformBridgeProvider);
     WidgetsBinding.instance.addObserver(this);
     _bridge.setSecureWindow(secure: true);
   }

@@ -38,6 +38,7 @@ class ToolRequest {
     this.verticalPosition = 2,
     this.signaturePath,
     this.signOnRight = true,
+    this.placement,
   });
 
   final PdfTool tool;
@@ -64,6 +65,10 @@ class ToolRequest {
   /// PNG of the handwritten signature (signature tool).
   final String? signaturePath;
   final bool signOnRight;
+
+  /// Position chosen on the page preview. When null, the text and signature
+  /// tools fall back to their preset positions.
+  final PdfNormalizedRect? placement;
 }
 
 class ToolOutcome {
@@ -250,8 +255,13 @@ class PdfToolRunner {
               PdfTextStamp(
                 pageIndex: _pageIndex(request.pageNumber, info.pageCount),
                 text: request.text,
-                x: 0.1,
-                y: const [0.08, 0.5, 0.9][request.verticalPosition.clamp(0, 2)],
+                x: request.placement?.left ?? 0.1,
+                y:
+                    request.placement?.top ??
+                    const [0.08, 0.5, 0.9][request.verticalPosition.clamp(
+                      0,
+                      2,
+                    )],
               ),
             ],
             password: password,
@@ -269,12 +279,14 @@ class PdfToolRunner {
               PdfImageStamp(
                 pageIndex: _pageIndex(request.pageNumber, info.pageCount),
                 imagePath: request.signaturePath!,
-                rect: PdfNormalizedRect(
-                  left: request.signOnRight ? 0.55 : 0.08,
-                  top: 0.82,
-                  width: 0.37,
-                  height: 0.12,
-                ),
+                rect:
+                    request.placement ??
+                    PdfNormalizedRect(
+                      left: request.signOnRight ? 0.55 : 0.08,
+                      top: 0.82,
+                      width: 0.37,
+                      height: 0.12,
+                    ),
               ),
             ],
             password: password,
