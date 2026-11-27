@@ -10,7 +10,9 @@ import 'package:md_scanner/features/document_vault/presentation/document_details
 import 'package:md_scanner/features/document_vault/presentation/documents_screen.dart';
 import 'package:md_scanner/features/document_vault/presentation/trash_screen.dart';
 import 'package:md_scanner/features/home/presentation/home_screen.dart';
+import 'package:md_scanner/features/id_scanner/presentation/id_scanner_screen.dart';
 import 'package:md_scanner/features/ocr/presentation/ocr_screen.dart';
+import 'package:md_scanner/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:md_scanner/features/pdf_tools/presentation/pdf_tool.dart';
 import 'package:md_scanner/features/pdf_tools/presentation/pdf_tool_screen.dart';
 import 'package:md_scanner/features/pdf_tools/presentation/tools_screen.dart';
@@ -20,11 +22,29 @@ import 'package:md_scanner/features/qr_scanner/presentation/code_history_screen.
 import 'package:md_scanner/features/qr_scanner/presentation/code_scanner_screen.dart';
 import 'package:md_scanner/features/security/presentation/vault_screen.dart';
 import 'package:md_scanner/features/settings/presentation/profile_screen.dart';
+import 'package:md_scanner/shared/providers/app_settings.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final router = GoRouter(
     initialLocation: AppRoutes.home,
+    // First launch goes through the introduction; afterwards it is skipped.
+    redirect: (context, state) {
+      final onboarded = ref.read(appSettingsProvider).onboardingCompleted;
+      final atOnboarding = state.matchedLocation == AppRoutes.onboarding;
+      if (!onboarded && !atOnboarding) return AppRoutes.onboarding;
+      if (onboarded && atOnboarding) return AppRoutes.home;
+      return null;
+    },
     routes: [
+      GoRoute(
+        path: AppRoutes.onboarding,
+        builder: (context, state) => const OnboardingScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.folderPattern,
+        builder: (context, state) =>
+            DocumentsScreen(folderId: state.pathParameters['folderId']),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
             AppShell(navigationShell: navigationShell),
@@ -45,6 +65,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => DocumentDetailsScreen(
           documentId: state.pathParameters['documentId']!,
         ),
+      ),
+      GoRoute(
+        path: AppRoutes.idScanner,
+        builder: (context, state) => const IdScannerScreen(),
       ),
       GoRoute(
         path: AppRoutes.ocr,

@@ -280,6 +280,30 @@ abstract class PremiumLocalizations {
   /// In fr, this message translates to:
   /// **'Choix de confidentialité publicitaire'**
   String get adsPrivacy;
+
+  /// No description provided for @rewardedTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Export DOCX'**
+  String get rewardedTitle;
+
+  /// No description provided for @rewardedMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'L\'export DOCX est une fonction Premium. Vous pouvez aussi regarder une courte publicité pour exporter ce document une fois.'**
+  String get rewardedMessage;
+
+  /// No description provided for @rewardedWatch.
+  ///
+  /// In fr, this message translates to:
+  /// **'Regarder une publicité'**
+  String get rewardedWatch;
+
+  /// No description provided for @rewardedUnavailable.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune publicité n\'est disponible pour le moment.'**
+  String get rewardedUnavailable;
 }
 
 class _PremiumLocalizationsDelegate

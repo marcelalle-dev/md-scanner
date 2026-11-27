@@ -19,6 +19,7 @@ import 'package:md_scanner/features/image_editor/domain/image_adjustments.dart';
 import 'package:md_scanner/features/image_editor/domain/image_models.dart';
 import 'package:md_scanner/features/image_editor/domain/image_processor.dart';
 import 'package:md_scanner/features/image_editor/domain/scan_mode.dart';
+import 'package:md_scanner/features/image_editor/presentation/crop_screen.dart';
 
 String scanFilterLabel(AppLocalizations l10n, ScanFilter filter) =>
     switch (filter) {
@@ -348,6 +349,20 @@ class _PageCard extends ConsumerWidget {
                           tooltip: l10n.reviewRotate,
                           icon: const Icon(Icons.rotate_90_degrees_cw_outlined),
                           onPressed: () => controller.rotate(page.id),
+                        ),
+                        IconButton(
+                          tooltip: l10n.reviewCrop,
+                          icon: const Icon(Icons.crop),
+                          onPressed: () async {
+                            final result = await showCropScreen(
+                              context,
+                              sourcePath: page.sourcePath,
+                              initial: page.quad,
+                            );
+                            if (result != null) {
+                              controller.setQuad(page.id, result.quad);
+                            }
+                          },
                         ),
                         IconButton(
                           tooltip: l10n.reviewDuplicate,

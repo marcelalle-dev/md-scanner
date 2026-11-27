@@ -16,7 +16,12 @@ abstract final class AdsConfig {
   static const String _testInterstitial =
       'ca-app-pub-3940256099942544/1033173712';
 
+  static const String _testRewarded = 'ca-app-pub-3940256099942544/5224354917';
+
   static const String _banner = String.fromEnvironment('ADMOB_BANNER_UNIT_ID');
+  static const String _rewarded = String.fromEnvironment(
+    'ADMOB_REWARDED_UNIT_ID',
+  );
   static const String _interstitial = String.fromEnvironment(
     'ADMOB_INTERSTITIAL_UNIT_ID',
   );
@@ -30,6 +35,9 @@ abstract final class AdsConfig {
 
   static String get interstitialUnitId =>
       _interstitial.isEmpty ? _testInterstitial : _interstitial;
+
+  static String get rewardedUnitId =>
+      _rewarded.isEmpty ? _testRewarded : _rewarded;
 
   static bool get usesTestUnits => _banner.isEmpty || _interstitial.isEmpty;
 }
@@ -131,6 +139,42 @@ class AdsService {
     );
     policy.interstitialShown();
     ad.show();
+  }
+
+  /// Shows a rewarded ad and resolves to true only if the user earned the
+  /// reward by watching it. Resolves to false when no ad could be shown.
+  Future<bool> showRewarded() {
+    if (!ready.value || !_active) return Future.value(false);
+    final done = Completer<bool>();
+    var earned = false;
+    void finish(bool value) {
+      if (!done.isCompleted) done.complete(value);
+    }
+
+    RewardedAd.load(
+      adUnitId: AdsConfig.rewardedUnitId,
+      request: const AdRequest(),
+      rewardedAdLoadCallback: RewardedAdLoadCallback(
+        onAdLoaded: (ad) {
+          ad.fullScreenContentCallback = FullScreenContentCallback<RewardedAd>(
+            onAdDismissedFullScreenContent: (ad) {
+              ad.dispose();
+              finish(earned);
+            },
+            onAdFailedToShowFullScreenContent: (ad, _) {
+              ad.dispose();
+              finish(false);
+            },
+          );
+          ad.show(onUserEarnedReward: (_, _) => earned = true);
+        },
+        onAdFailedToLoad: (_) => finish(false),
+      ),
+    );
+    return done.future.timeout(
+      const Duration(minutes: 3),
+      onTimeout: () => earned,
+    );
   }
 
   /// Drops loaded ads at once, for example when the user becomes Premium.

@@ -113,4 +113,10 @@ class SecurityLocalizationsFr extends SecurityLocalizations {
   @override
   String get vaultPreviewUnavailable =>
       'Ce type de fichier ne peut pas être affiché ici. Sortez-le du coffre-fort pour l\'ouvrir.';
+
+  @override
+  String get appLockSetting => 'Verrouiller toute l\'application';
+
+  @override
+  String get appLockTitle => 'MD SCANNER est verrouillé';
 }

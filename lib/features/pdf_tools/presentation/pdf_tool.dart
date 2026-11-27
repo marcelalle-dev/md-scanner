@@ -12,6 +12,8 @@ enum PdfTool {
   unlock('unlock', Icons.lock_open_outlined),
   watermark('watermark', Icons.branding_watermark_outlined),
   pageNumbers('page-numbers', Icons.format_list_numbered_outlined),
+  addText('add-text', Icons.text_fields),
+  sign('sign', Icons.draw_outlined),
   pdfToImages('pdf-to-images', Icons.image_outlined);
 
   const PdfTool(this.id, this.icon);
@@ -36,6 +38,8 @@ enum PdfTool {
     unlock => l10n.toolUnlock,
     watermark => l10n.toolWatermark,
     pageNumbers => l10n.toolPageNumbers,
+    addText => l10n.toolAddText,
+    sign => l10n.toolSign,
     pdfToImages => l10n.toolPdfToImages,
   };
 
@@ -49,6 +53,8 @@ enum PdfTool {
     unlock => l10n.toolUnlockHint,
     watermark => l10n.toolWatermarkHint,
     pageNumbers => l10n.toolPageNumbersHint,
+    addText => l10n.toolAddTextHint,
+    sign => l10n.toolSignHint,
     pdfToImages => l10n.toolPdfToImagesHint,
   };
 }

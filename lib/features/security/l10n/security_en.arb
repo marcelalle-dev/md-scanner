@@ -32,5 +32,7 @@
   "vaultRemovePinConfirm": "Enter your PIN to remove it",
   "vaultPinRemoved": "PIN removed",
   "vaultMoveHere": "Move to vault",
-  "vaultPreviewUnavailable": "This file type cannot be displayed here. Remove it from the vault to open it."
+  "vaultPreviewUnavailable": "This file type cannot be displayed here. Remove it from the vault to open it.",
+  "appLockSetting": "Lock the whole app",
+  "appLockTitle": "MD SCANNER is locked"
 }

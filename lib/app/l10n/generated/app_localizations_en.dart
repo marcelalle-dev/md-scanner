@@ -487,4 +487,138 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profilePublisher => 'Published by MarcelAlle.Dev';
+
+  @override
+  String get onbTitle1 => 'Scan in one tap';
+
+  @override
+  String get onbText1 =>
+      'Take a picture of a document: edges are detected, the page is straightened and saved as a PDF.';
+
+  @override
+  String get onbTitle2 => 'All your tools in one place';
+
+  @override
+  String get onbText2 =>
+      'Text recognition, QR codes, merging, compression, signing and protection of your PDFs.';
+
+  @override
+  String get onbTitle3 => 'Your documents stay with you';
+
+  @override
+  String get onbText3 =>
+      'Everything is processed on the device and works offline. An encrypted vault protects your sensitive documents.';
+
+  @override
+  String get onbStart => 'Get started';
+
+  @override
+  String get foldersTitle => 'Folders';
+
+  @override
+  String get folderNew => 'New folder';
+
+  @override
+  String get folderName => 'Folder name';
+
+  @override
+  String get folderDelete => 'Delete folder';
+
+  @override
+  String folderDeleteConfirm(String name) {
+    return 'Delete the folder \"$name\"?';
+  }
+
+  @override
+  String get folderDeleteMessage =>
+      'Its documents move back to the root. No document is deleted.';
+
+  @override
+  String get folderEmpty => 'This folder is empty';
+
+  @override
+  String get documentMove => 'Move to…';
+
+  @override
+  String get folderRoot => 'Root (no folder)';
+
+  @override
+  String get documentMoved => 'Document moved';
+
+  @override
+  String get documentTags => 'Tags…';
+
+  @override
+  String get tagsHint => 'Separate tags with commas';
+
+  @override
+  String get tagsLabel => 'Tags';
+
+  @override
+  String get reviewCrop => 'Crop';
+
+  @override
+  String get cropTitle => 'Crop the page';
+
+  @override
+  String get cropHint =>
+      'Drag the four corners onto the edges of the document.';
+
+  @override
+  String get cropReset => 'Whole page';
+
+  @override
+  String get cropInvalid =>
+      'Place the corners so that they form a quadrilateral.';
+
+  @override
+  String get toolAddText => 'Add text';
+
+  @override
+  String get toolAddTextHint => 'Write one line on a page';
+
+  @override
+  String get toolSign => 'Sign';
+
+  @override
+  String get toolSignHint => 'Place a handwritten signature';
+
+  @override
+  String get toolPage => 'Page number';
+
+  @override
+  String get toolPageInvalid => 'Invalid page number.';
+
+  @override
+  String get toolText => 'Text to add';
+
+  @override
+  String get toolPosition => 'Position';
+
+  @override
+  String get posTop => 'Top';
+
+  @override
+  String get posMiddle => 'Middle';
+
+  @override
+  String get posBottom => 'Bottom';
+
+  @override
+  String get signDraw => 'Sign inside the frame';
+
+  @override
+  String get signClear => 'Clear';
+
+  @override
+  String get signEmpty => 'Draw your signature.';
+
+  @override
+  String get signLeft => 'Bottom left';
+
+  @override
+  String get signRight => 'Bottom right';
+
+  @override
+  String get printFailed => 'Printing could not start.';
 }

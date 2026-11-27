@@ -489,4 +489,138 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get profilePublisher => 'Édité par MarcelAlle.Dev';
+
+  @override
+  String get onbTitle1 => 'Numérisez en un geste';
+
+  @override
+  String get onbText1 =>
+      'Photographiez un document : les bords sont détectés, la page est redressée et enregistrée en PDF.';
+
+  @override
+  String get onbTitle2 => 'Tous vos outils au même endroit';
+
+  @override
+  String get onbText2 =>
+      'Reconnaissance de texte, QR codes, fusion, compression, signature et protection de vos PDF.';
+
+  @override
+  String get onbTitle3 => 'Vos documents restent chez vous';
+
+  @override
+  String get onbText3 =>
+      'Tout est traité sur l\'appareil et fonctionne hors connexion. Un coffre-fort chiffré protège vos documents sensibles.';
+
+  @override
+  String get onbStart => 'Commencer';
+
+  @override
+  String get foldersTitle => 'Dossiers';
+
+  @override
+  String get folderNew => 'Nouveau dossier';
+
+  @override
+  String get folderName => 'Nom du dossier';
+
+  @override
+  String get folderDelete => 'Supprimer le dossier';
+
+  @override
+  String folderDeleteConfirm(String name) {
+    return 'Supprimer le dossier « $name » ?';
+  }
+
+  @override
+  String get folderDeleteMessage =>
+      'Ses documents seront replacés à la racine. Aucun document ne sera supprimé.';
+
+  @override
+  String get folderEmpty => 'Ce dossier est vide';
+
+  @override
+  String get documentMove => 'Déplacer vers…';
+
+  @override
+  String get folderRoot => 'Racine (aucun dossier)';
+
+  @override
+  String get documentMoved => 'Document déplacé';
+
+  @override
+  String get documentTags => 'Étiquettes…';
+
+  @override
+  String get tagsHint => 'Séparez les étiquettes par des virgules';
+
+  @override
+  String get tagsLabel => 'Étiquettes';
+
+  @override
+  String get reviewCrop => 'Recadrer';
+
+  @override
+  String get cropTitle => 'Recadrer la page';
+
+  @override
+  String get cropHint =>
+      'Faites glisser les quatre coins sur les bords du document.';
+
+  @override
+  String get cropReset => 'Page entière';
+
+  @override
+  String get cropInvalid =>
+      'Placez les coins de façon à former un quadrilatère.';
+
+  @override
+  String get toolAddText => 'Ajouter du texte';
+
+  @override
+  String get toolAddTextHint => 'Écrire une ligne sur une page';
+
+  @override
+  String get toolSign => 'Signer';
+
+  @override
+  String get toolSignHint => 'Apposer une signature manuscrite';
+
+  @override
+  String get toolPage => 'Numéro de page';
+
+  @override
+  String get toolPageInvalid => 'Numéro de page invalide.';
+
+  @override
+  String get toolText => 'Texte à ajouter';
+
+  @override
+  String get toolPosition => 'Position';
+
+  @override
+  String get posTop => 'Haut';
+
+  @override
+  String get posMiddle => 'Milieu';
+
+  @override
+  String get posBottom => 'Bas';
+
+  @override
+  String get signDraw => 'Signez dans le cadre';
+
+  @override
+  String get signClear => 'Effacer';
+
+  @override
+  String get signEmpty => 'Dessinez votre signature.';
+
+  @override
+  String get signLeft => 'En bas à gauche';
+
+  @override
+  String get signRight => 'En bas à droite';
+
+  @override
+  String get printFailed => 'L\'impression n\'a pas pu démarrer.';
 }

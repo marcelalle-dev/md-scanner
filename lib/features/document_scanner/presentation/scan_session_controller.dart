@@ -40,12 +40,16 @@ class ScanPage extends Equatable {
   /// True for imported photos, on which automatic detection was run.
   final bool cropAttempted;
 
-  ScanPage copyWith({String? id, ImageAdjustments? adjustments}) => ScanPage(
+  ScanPage copyWith({
+    String? id,
+    ImageAdjustments? adjustments,
+    Quad? Function()? quad,
+  }) => ScanPage(
     id: id ?? this.id,
     sourcePath: sourcePath,
     adjustments: adjustments ?? this.adjustments,
-    quad: quad,
-    cropAttempted: cropAttempted,
+    quad: quad != null ? quad() : this.quad,
+    cropAttempted: quad != null ? false : cropAttempted,
   );
 
   @override
@@ -177,6 +181,14 @@ class ScanSessionController extends Notifier<ScanSession?> {
                 adjustments: page.adjustments.copyWith(filter: filter),
               )
             : page,
+    ],
+  );
+
+  /// Applies a manual crop; null keeps the whole page.
+  void setQuad(String pageId, Quad? quad) => _updatePages(
+    (pages) => [
+      for (final page in pages)
+        page.id == pageId ? page.copyWith(quad: () => quad) : page,
     ],
   );
 

@@ -6,6 +6,7 @@ import 'package:md_scanner/app/l10n/generated/app_localizations.dart';
 import 'package:md_scanner/app/routes.dart';
 import 'package:md_scanner/app/theme/app_tokens.dart';
 import 'package:md_scanner/core/errors/result.dart';
+import 'package:md_scanner/core/widgets/dialogs.dart';
 import 'package:md_scanner/core/widgets/feedback.dart';
 import 'package:md_scanner/core/widgets/state_views.dart';
 import 'package:md_scanner/features/ads/presentation/ad_banner_slot.dart';
@@ -25,8 +26,15 @@ enum _SortOption {
   final DocumentSort sort;
 }
 
-/// Lets the user pick one supported file and adds it to the library.
-Future<void> importDocument(BuildContext context, WidgetRef ref) async {
+enum _FolderAction { rename, delete }
+
+/// Lets the user pick supported files and adds them to the library,
+/// optionally straight into [folderId].
+Future<void> importDocument(
+  BuildContext context,
+  WidgetRef ref, {
+  String? folderId,
+}) async {
   final l10n = AppLocalizations.of(context);
   final picked = await FilePicker.pickFiles(
     type: FileType.custom,
@@ -38,7 +46,10 @@ Future<void> importDocument(BuildContext context, WidgetRef ref) async {
   for (final file in picked) {
     final path = file.path;
     if (path == null) continue;
-    final result = await repository.importExternalFile(path);
+    final result = await repository.importExternalFile(
+      path,
+      folderId: folderId,
+    );
     if (!context.mounted) return;
     switch (result) {
       case Success():
@@ -52,8 +63,19 @@ Future<void> importDocument(BuildContext context, WidgetRef ref) async {
   }
 }
 
+final _folderProvider = FutureProvider.autoDispose
+    .family<FolderEntity?, String>((ref, id) async {
+      final result = await ref.watch(documentRepositoryProvider).getFolder(id);
+      return result.valueOrNull;
+    });
+
+/// The library. Without a search it shows the folders and documents of the
+/// current folder; a search or the favorites filter spans every folder.
 class DocumentsScreen extends ConsumerStatefulWidget {
-  const DocumentsScreen({super.key});
+  const DocumentsScreen({this.folderId, super.key});
+
+  /// Null for the root of the library.
+  final String? folderId;
 
   @override
   ConsumerState<DocumentsScreen> createState() => _DocumentsScreenState();
@@ -78,9 +100,60 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen> {
         _SortOption.size => l10n.sortSize,
       };
 
+  void _report(Result<Object?> result) {
+    final failure = result.failureOrNull;
+    if (failure != null && mounted) context.showFailure(failure);
+  }
+
+  Future<void> _createFolder() async {
+    final l10n = AppLocalizations.of(context);
+    final name = await showTextInputDialog(
+      context,
+      title: l10n.folderNew,
+      label: l10n.folderName,
+      maxLength: 60,
+      validator: (value) => value.isEmpty ? l10n.documentNameEmpty : null,
+    );
+    if (name == null) return;
+    _report(
+      await ref
+          .read(documentRepositoryProvider)
+          .createFolder(name, parentId: widget.folderId),
+    );
+  }
+
+  Future<void> _renameFolder(FolderEntity folder) async {
+    final l10n = AppLocalizations.of(context);
+    final name = await showTextInputDialog(
+      context,
+      title: l10n.documentRename,
+      initialValue: folder.name,
+      maxLength: 60,
+      validator: (value) => value.isEmpty ? l10n.documentNameEmpty : null,
+    );
+    if (name == null || name == folder.name) return;
+    _report(
+      await ref.read(documentRepositoryProvider).renameFolder(folder.id, name),
+    );
+  }
+
+  Future<void> _deleteFolder(FolderEntity folder) async {
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await showConfirmDialog(
+      context,
+      title: l10n.folderDeleteConfirm(folder.name),
+      message: l10n.folderDeleteMessage,
+      confirmLabel: context.coreL10n.actionDelete,
+      destructive: true,
+    );
+    if (!confirmed) return;
+    _report(await ref.read(documentRepositoryProvider).deleteFolder(folder.id));
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final folderId = widget.folderId;
     final query = _search.text.trim();
     final filtered = query.isNotEmpty || _favoritesOnly;
     final provider = documentListProvider(
@@ -88,14 +161,27 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen> {
         search: query.isEmpty ? null : query,
         favoritesOnly: _favoritesOnly,
         sort: _sort.sort,
+        restrictToFolder: !filtered,
+        folderId: filtered ? null : folderId,
       ),
     );
     final documents = ref.watch(provider);
+    final folders = filtered
+        ? const <FolderEntity>[]
+        : ref.watch(folderListProvider(folderId)).value ?? const [];
+    final current = folderId == null
+        ? null
+        : ref.watch(_folderProvider(folderId)).value;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.documentsTitle),
+        title: Text(current?.name ?? l10n.documentsTitle),
         actions: [
+          IconButton(
+            tooltip: l10n.folderNew,
+            icon: const Icon(Icons.create_new_folder_outlined),
+            onPressed: _createFolder,
+          ),
           PopupMenuButton<_SortOption>(
             tooltip: l10n.documentsSort,
             icon: const Icon(Icons.sort),
@@ -109,16 +195,17 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen> {
                 ),
             ],
           ),
-          IconButton(
-            tooltip: l10n.documentsTrash,
-            icon: const Icon(Icons.delete_outline),
-            onPressed: () => context.push(AppRoutes.trash),
-          ),
+          if (folderId == null)
+            IconButton(
+              tooltip: l10n.documentsTrash,
+              icon: const Icon(Icons.delete_outline),
+              onPressed: () => context.push(AppRoutes.trash),
+            ),
         ],
       ),
-      bottomNavigationBar: const AdBannerSlot(),
+      bottomNavigationBar: folderId == null ? const AdBannerSlot() : null,
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => importDocument(context, ref),
+        onPressed: () => importDocument(context, ref, folderId: folderId),
         icon: const Icon(Icons.upload_file_outlined),
         label: Text(l10n.documentsImport),
       ),
@@ -165,11 +252,16 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen> {
               value: documents,
               onRetry: () => ref.invalidate(provider),
               data: (items) {
-                if (items.isEmpty) {
+                if (items.isEmpty && folders.isEmpty) {
                   return filtered
                       ? EmptyState(
                           icon: Icons.search_off,
                           title: l10n.documentsNoResult,
+                        )
+                      : folderId != null
+                      ? EmptyState(
+                          icon: Icons.folder_open,
+                          title: l10n.folderEmpty,
                         )
                       : EmptyState(
                           icon: Icons.folder_open,
@@ -177,16 +269,52 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen> {
                           message: l10n.documentsEmptyMessage,
                         );
                 }
-                return ListView.separated(
+                return ListView.builder(
                   padding: const EdgeInsets.only(bottom: 96),
-                  itemCount: items.length,
-                  separatorBuilder: (_, _) => const Divider(indent: 76),
-                  itemBuilder: (context, index) => DocumentTile(
-                    document: items[index],
-                    onTap: () => context.push(
-                      AppRoutes.documentDetails(items[index].id),
-                    ),
-                  ),
+                  itemCount: folders.length + items.length,
+                  itemBuilder: (context, index) {
+                    if (index < folders.length) {
+                      final folder = folders[index];
+                      return ListTile(
+                        leading: const SizedBox(
+                          width: 44,
+                          child: Icon(Icons.folder_outlined, size: 32),
+                        ),
+                        title: Text(
+                          folder.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        subtitle: Text(
+                          '${folder.documentCount} · ${l10n.documentsTitle}',
+                        ),
+                        onTap: () => context.push(AppRoutes.folder(folder.id)),
+                        trailing: PopupMenuButton<_FolderAction>(
+                          tooltip: context.coreL10n.actionMore,
+                          onSelected: (action) => switch (action) {
+                            _FolderAction.rename => _renameFolder(folder),
+                            _FolderAction.delete => _deleteFolder(folder),
+                          },
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                              value: _FolderAction.rename,
+                              child: Text(l10n.documentRename),
+                            ),
+                            PopupMenuItem(
+                              value: _FolderAction.delete,
+                              child: Text(l10n.folderDelete),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    final document = items[index - folders.length];
+                    return DocumentTile(
+                      document: document,
+                      onTap: () =>
+                          context.push(AppRoutes.documentDetails(document.id)),
+                    );
+                  },
                 );
               },
             ),

@@ -27,7 +27,10 @@ void main() {
 
   Future<void> pumpApp(
     WidgetTester tester, {
-    AppSettings settings = const AppSettings(localeCode: 'fr'),
+    AppSettings settings = const AppSettings(
+      localeCode: 'fr',
+      onboardingCompleted: true,
+    ),
   }) async {
     await tester.pumpWidget(
       ProviderScope(
@@ -103,7 +106,13 @@ void main() {
 
   testWidgets('the interface follows the saved language', (tester) async {
     await tester.runAsync(
-      () => pumpApp(tester, settings: const AppSettings(localeCode: 'en')),
+      () => pumpApp(
+        tester,
+        settings: const AppSettings(
+          localeCode: 'en',
+          onboardingCompleted: true,
+        ),
+      ),
     );
     await tester.pumpAndSettle();
 
@@ -111,11 +120,46 @@ void main() {
     expect(find.text('Home'), findsOneWidget);
   });
 
+  testWidgets('the first launch goes through the introduction', (tester) async {
+    await tester.runAsync(
+      () => pumpApp(tester, settings: const AppSettings(localeCode: 'fr')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Numérisez en un geste'), findsOneWidget);
+    expect(find.byType(NavigationBar), findsNothing);
+
+    await tester.tap(find.text('Suivant'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Suivant'));
+    await tester.pumpAndSettle();
+    expect(find.text('Vos documents restent chez vous'), findsOneWidget);
+
+    await tester.runAsync(() async {
+      await tester.tap(find.text('Commencer'));
+      await Future<void>.delayed(const Duration(milliseconds: 200));
+    });
+    await tester.pumpAndSettle();
+
+    expect(find.byType(NavigationBar), findsOneWidget);
+    final saved = await tester.runAsync(
+      () => database.db.query('app_settings'),
+    );
+    expect(
+      saved!.any(
+        (row) =>
+            row['key'] == AppSettings.keyOnboardingCompleted &&
+            row['value'] == 'true',
+      ),
+      isTrue,
+    );
+  });
+
   test('every PDF tool is reachable by its route id', () {
     for (final tool in PdfTool.values) {
       expect(PdfTool.byId(tool.id), tool);
     }
     expect(PdfTool.byId('unknown'), isNull);
-    expect(PdfTool.values.map((t) => t.id).toSet(), hasLength(10));
+    expect(PdfTool.values.map((t) => t.id).toSet(), hasLength(12));
   });
 }

@@ -8,6 +8,7 @@ import 'package:md_scanner/app/routes.dart';
 import 'package:md_scanner/app/theme/app_tokens.dart';
 import 'package:md_scanner/core/errors/failure.dart';
 import 'package:md_scanner/core/errors/result.dart';
+import 'package:md_scanner/core/storage/file_storage.dart';
 import 'package:md_scanner/core/utils/formatters.dart';
 import 'package:md_scanner/core/widgets/cards.dart';
 import 'package:md_scanner/core/widgets/dialogs.dart';
@@ -17,6 +18,7 @@ import 'package:md_scanner/features/ads/data/ads_service.dart';
 import 'package:md_scanner/features/pdf_tools/domain/pdf_models.dart';
 import 'package:md_scanner/features/pdf_tools/presentation/pdf_tool.dart';
 import 'package:md_scanner/features/pdf_tools/presentation/pdf_tool_runner.dart';
+import 'package:md_scanner/features/pdf_tools/presentation/signature_pad.dart';
 import 'package:path/path.dart' as p;
 
 /// One screen drives every PDF tool: choose the input file(s), set the few
@@ -33,6 +35,10 @@ class PdfToolScreen extends ConsumerStatefulWidget {
 class _PdfToolScreenState extends ConsumerState<PdfToolScreen> {
   final List<ToolInput> _inputs = [];
   final TextEditingController _text = TextEditingController();
+  final TextEditingController _page = TextEditingController();
+  final GlobalKey<SignaturePadState> _signature = GlobalKey();
+  int _verticalPosition = 2;
+  bool _signOnRight = true;
   PdfCompressionLevel _level = PdfCompressionLevel.balanced;
   int _quarterTurns = 1;
   String? _textError;
@@ -48,13 +54,17 @@ class _PdfToolScreenState extends ConsumerState<PdfToolScreen> {
       _tool == PdfTool.extract ||
       _tool == PdfTool.protect ||
       _tool == PdfTool.unlock ||
-      _tool == PdfTool.watermark;
+      _tool == PdfTool.watermark ||
+      _tool == PdfTool.addText;
+
+  bool get _needsPage => _tool == PdfTool.addText || _tool == PdfTool.sign;
 
   bool get _secretText => _tool == PdfTool.protect || _tool == PdfTool.unlock;
 
   @override
   void dispose() {
     _text.dispose();
+    _page.dispose();
     super.dispose();
   }
 
@@ -111,6 +121,26 @@ class _PdfToolScreenState extends ConsumerState<PdfToolScreen> {
       return;
     }
     if (!_validate(l10n)) return;
+    final pageText = _page.text.trim();
+    final pageNumber = pageText.isEmpty ? null : int.tryParse(pageText);
+    if (_needsPage && pageText.isNotEmpty && pageNumber == null) {
+      context.showMessage(l10n.toolPageInvalid);
+      return;
+    }
+    String? signaturePath;
+    if (_tool == PdfTool.sign) {
+      final png = await _signature.currentState?.toPng();
+      if (!mounted) return;
+      if (png == null) {
+        context.showMessage(l10n.signEmpty);
+        return;
+      }
+      final storage = ref.read(fileStorageProvider);
+      signaturePath = storage.absolutePath(
+        await storage.writeBytes(StorageArea.temp, png, extension: 'png'),
+      );
+      if (!mounted) return;
+    }
 
     final runner = ref.read(pdfToolRunnerProvider);
     String? inputPassword;
@@ -125,6 +155,10 @@ class _PdfToolScreenState extends ConsumerState<PdfToolScreen> {
         level: _level,
         quarterTurns: _quarterTurns,
         inputPassword: inputPassword,
+        pageNumber: pageNumber,
+        verticalPosition: _verticalPosition,
+        signaturePath: signaturePath,
+        signOnRight: _signOnRight,
       );
       result = await runWithProgress(
         context,
@@ -246,6 +280,7 @@ class _PdfToolScreenState extends ConsumerState<PdfToolScreen> {
                 labelText: switch (_tool) {
                   PdfTool.extract => l10n.toolRanges,
                   PdfTool.watermark => l10n.toolWatermarkText,
+                  PdfTool.addText => l10n.toolText,
                   _ => l10n.toolPassword,
                 },
                 helperText: _tool == PdfTool.extract
@@ -253,6 +288,49 @@ class _PdfToolScreenState extends ConsumerState<PdfToolScreen> {
                     : null,
                 errorText: _textError,
               ),
+            ),
+          ],
+          if (_needsPage) ...[
+            const SizedBox(height: AppSpacing.md),
+            TextField(
+              controller: _page,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: l10n.toolPage),
+            ),
+          ],
+          if (_tool == PdfTool.addText) ...[
+            SectionHeader(title: l10n.toolPosition),
+            SegmentedButton<int>(
+              segments: [
+                ButtonSegment(value: 0, label: Text(l10n.posTop)),
+                ButtonSegment(value: 1, label: Text(l10n.posMiddle)),
+                ButtonSegment(value: 2, label: Text(l10n.posBottom)),
+              ],
+              selected: {_verticalPosition},
+              showSelectedIcon: false,
+              onSelectionChanged: (value) =>
+                  setState(() => _verticalPosition = value.first),
+            ),
+          ],
+          if (_tool == PdfTool.sign) ...[
+            SectionHeader(
+              title: l10n.signDraw,
+              trailing: TextButton(
+                onPressed: () => _signature.currentState?.clear(),
+                child: Text(l10n.signClear),
+              ),
+            ),
+            SignaturePad(key: _signature),
+            const SizedBox(height: AppSpacing.sm),
+            SegmentedButton<bool>(
+              segments: [
+                ButtonSegment(value: false, label: Text(l10n.signLeft)),
+                ButtonSegment(value: true, label: Text(l10n.signRight)),
+              ],
+              selected: {_signOnRight},
+              showSelectedIcon: false,
+              onSelectionChanged: (value) =>
+                  setState(() => _signOnRight = value.first),
             ),
           ],
           if (_tool == PdfTool.compress) ...[

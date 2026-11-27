@@ -298,6 +298,18 @@ abstract class SecurityLocalizations {
   /// In fr, this message translates to:
   /// **'Ce type de fichier ne peut pas être affiché ici. Sortez-le du coffre-fort pour l\'ouvrir.'**
   String get vaultPreviewUnavailable;
+
+  /// No description provided for @appLockSetting.
+  ///
+  /// In fr, this message translates to:
+  /// **'Verrouiller toute l\'application'**
+  String get appLockSetting;
+
+  /// No description provided for @appLockTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'MD SCANNER est verrouillé'**
+  String get appLockTitle;
 }
 
 class _SecurityLocalizationsDelegate

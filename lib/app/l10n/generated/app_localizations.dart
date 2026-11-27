@@ -991,6 +991,258 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Édité par MarcelAlle.Dev'**
   String get profilePublisher;
+
+  /// No description provided for @onbTitle1.
+  ///
+  /// In fr, this message translates to:
+  /// **'Numérisez en un geste'**
+  String get onbTitle1;
+
+  /// No description provided for @onbText1.
+  ///
+  /// In fr, this message translates to:
+  /// **'Photographiez un document : les bords sont détectés, la page est redressée et enregistrée en PDF.'**
+  String get onbText1;
+
+  /// No description provided for @onbTitle2.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tous vos outils au même endroit'**
+  String get onbTitle2;
+
+  /// No description provided for @onbText2.
+  ///
+  /// In fr, this message translates to:
+  /// **'Reconnaissance de texte, QR codes, fusion, compression, signature et protection de vos PDF.'**
+  String get onbText2;
+
+  /// No description provided for @onbTitle3.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vos documents restent chez vous'**
+  String get onbTitle3;
+
+  /// No description provided for @onbText3.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tout est traité sur l\'appareil et fonctionne hors connexion. Un coffre-fort chiffré protège vos documents sensibles.'**
+  String get onbText3;
+
+  /// No description provided for @onbStart.
+  ///
+  /// In fr, this message translates to:
+  /// **'Commencer'**
+  String get onbStart;
+
+  /// No description provided for @foldersTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dossiers'**
+  String get foldersTitle;
+
+  /// No description provided for @folderNew.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouveau dossier'**
+  String get folderNew;
+
+  /// No description provided for @folderName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom du dossier'**
+  String get folderName;
+
+  /// No description provided for @folderDelete.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer le dossier'**
+  String get folderDelete;
+
+  /// No description provided for @folderDeleteConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer le dossier « {name} » ?'**
+  String folderDeleteConfirm(String name);
+
+  /// No description provided for @folderDeleteMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ses documents seront replacés à la racine. Aucun document ne sera supprimé.'**
+  String get folderDeleteMessage;
+
+  /// No description provided for @folderEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce dossier est vide'**
+  String get folderEmpty;
+
+  /// No description provided for @documentMove.
+  ///
+  /// In fr, this message translates to:
+  /// **'Déplacer vers…'**
+  String get documentMove;
+
+  /// No description provided for @folderRoot.
+  ///
+  /// In fr, this message translates to:
+  /// **'Racine (aucun dossier)'**
+  String get folderRoot;
+
+  /// No description provided for @documentMoved.
+  ///
+  /// In fr, this message translates to:
+  /// **'Document déplacé'**
+  String get documentMoved;
+
+  /// No description provided for @documentTags.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étiquettes…'**
+  String get documentTags;
+
+  /// No description provided for @tagsHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Séparez les étiquettes par des virgules'**
+  String get tagsHint;
+
+  /// No description provided for @tagsLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étiquettes'**
+  String get tagsLabel;
+
+  /// No description provided for @reviewCrop.
+  ///
+  /// In fr, this message translates to:
+  /// **'Recadrer'**
+  String get reviewCrop;
+
+  /// No description provided for @cropTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Recadrer la page'**
+  String get cropTitle;
+
+  /// No description provided for @cropHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Faites glisser les quatre coins sur les bords du document.'**
+  String get cropHint;
+
+  /// No description provided for @cropReset.
+  ///
+  /// In fr, this message translates to:
+  /// **'Page entière'**
+  String get cropReset;
+
+  /// No description provided for @cropInvalid.
+  ///
+  /// In fr, this message translates to:
+  /// **'Placez les coins de façon à former un quadrilatère.'**
+  String get cropInvalid;
+
+  /// No description provided for @toolAddText.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter du texte'**
+  String get toolAddText;
+
+  /// No description provided for @toolAddTextHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Écrire une ligne sur une page'**
+  String get toolAddTextHint;
+
+  /// No description provided for @toolSign.
+  ///
+  /// In fr, this message translates to:
+  /// **'Signer'**
+  String get toolSign;
+
+  /// No description provided for @toolSignHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Apposer une signature manuscrite'**
+  String get toolSignHint;
+
+  /// No description provided for @toolPage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Numéro de page'**
+  String get toolPage;
+
+  /// No description provided for @toolPageInvalid.
+  ///
+  /// In fr, this message translates to:
+  /// **'Numéro de page invalide.'**
+  String get toolPageInvalid;
+
+  /// No description provided for @toolText.
+  ///
+  /// In fr, this message translates to:
+  /// **'Texte à ajouter'**
+  String get toolText;
+
+  /// No description provided for @toolPosition.
+  ///
+  /// In fr, this message translates to:
+  /// **'Position'**
+  String get toolPosition;
+
+  /// No description provided for @posTop.
+  ///
+  /// In fr, this message translates to:
+  /// **'Haut'**
+  String get posTop;
+
+  /// No description provided for @posMiddle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Milieu'**
+  String get posMiddle;
+
+  /// No description provided for @posBottom.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bas'**
+  String get posBottom;
+
+  /// No description provided for @signDraw.
+  ///
+  /// In fr, this message translates to:
+  /// **'Signez dans le cadre'**
+  String get signDraw;
+
+  /// No description provided for @signClear.
+  ///
+  /// In fr, this message translates to:
+  /// **'Effacer'**
+  String get signClear;
+
+  /// No description provided for @signEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dessinez votre signature.'**
+  String get signEmpty;
+
+  /// No description provided for @signLeft.
+  ///
+  /// In fr, this message translates to:
+  /// **'En bas à gauche'**
+  String get signLeft;
+
+  /// No description provided for @signRight.
+  ///
+  /// In fr, this message translates to:
+  /// **'En bas à droite'**
+  String get signRight;
+
+  /// No description provided for @printFailed.
+  ///
+  /// In fr, this message translates to:
+  /// **'L\'impression n\'a pas pu démarrer.'**
+  String get printFailed;
 }
 
 class _AppLocalizationsDelegate

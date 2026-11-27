@@ -29,5 +29,9 @@
   "premiumEntry": "Premium",
   "premiumEntryHint": "Remove ads and unlock advanced features",
   "premiumEntryActive": "Premium active",
-  "adsPrivacy": "Ad privacy choices"
+  "adsPrivacy": "Ad privacy choices",
+  "rewardedTitle": "DOCX export",
+  "rewardedMessage": "DOCX export is a Premium feature. You can also watch a short ad to export this document once.",
+  "rewardedWatch": "Watch an ad",
+  "rewardedUnavailable": "No ad is available right now."
 }

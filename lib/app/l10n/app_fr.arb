@@ -27,14 +27,26 @@
   "reviewTitle": "Pages numérisées",
   "reviewName": "Nom du document",
   "reviewDefaultName": "Numérisation {date}",
-  "@reviewDefaultName": {"placeholders": {"date": {"type": "String"}}},
+  "@reviewDefaultName": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "reviewAddCamera": "Ajouter avec l'appareil photo",
   "reviewAddGallery": "Ajouter depuis la galerie",
   "reviewExportPdf": "Enregistrer en PDF",
   "reviewExportImages": "Enregistrer en images JPG",
   "reviewExporting": "Création du document…",
   "reviewPage": "Page {number}",
-  "@reviewPage": {"placeholders": {"number": {"type": "int"}}},
+  "@reviewPage": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
   "reviewDeletePage": "Supprimer la page",
   "reviewDuplicate": "Dupliquer la page",
   "reviewRotate": "Pivoter",
@@ -53,7 +65,13 @@
   "reviewDiscardMessage": "Les pages non enregistrées seront perdues.",
   "reviewDiscard": "Abandonner",
   "reviewImagesSaved": "{count, plural, =1{1 image enregistrée} other{{count} images enregistrées}}",
-  "@reviewImagesSaved": {"placeholders": {"count": {"type": "int"}}},
+  "@reviewImagesSaved": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "documentsTitle": "Documents",
   "documentsSearch": "Rechercher par nom",
   "documentsEmptyTitle": "Votre bibliothèque est vide",
@@ -109,7 +127,13 @@
   "toolPdfToImagesHint": "Enregistrer chaque page en JPG",
   "toolAddPdf": "Ajouter un PDF",
   "toolSelectedCount": "{count, plural, =0{Aucun PDF sélectionné} =1{1 PDF sélectionné} other{{count} PDF sélectionnés}}",
-  "@toolSelectedCount": {"placeholders": {"count": {"type": "int"}}},
+  "@toolSelectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "toolNeedTwo": "Sélectionnez au moins deux PDF.",
   "toolMergeNow": "Fusionner",
   "toolRanges": "Pages à extraire",
@@ -129,9 +153,24 @@
   "rotateLeft": "90° vers la gauche",
   "toolRunning": "Traitement du PDF…",
   "toolCompressionResult": "Taille réduite : {before} → {after}",
-  "@toolCompressionResult": {"placeholders": {"before": {"type": "String"}, "after": {"type": "String"}}},
+  "@toolCompressionResult": {
+    "placeholders": {
+      "before": {
+        "type": "String"
+      },
+      "after": {
+        "type": "String"
+      }
+    }
+  },
   "toolCompressionNone": "Ce PDF est déjà optimisé : aucune réduction obtenue ({size}).",
-  "@toolCompressionNone": {"placeholders": {"size": {"type": "String"}}},
+  "@toolCompressionNone": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "toolOpenResult": "Ouvrir",
   "profileTitle": "Profil",
   "profileAppearance": "Apparence",
@@ -154,6 +193,61 @@
   "profileHelp": "Aide et assistance",
   "profileLicenses": "Licences open source",
   "profileVersion": "Version {version}",
-  "@profileVersion": {"placeholders": {"version": {"type": "String"}}},
-  "profilePublisher": "Édité par MarcelAlle.Dev"
+  "@profileVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "profilePublisher": "Édité par MarcelAlle.Dev",
+  "onbTitle1": "Numérisez en un geste",
+  "onbText1": "Photographiez un document : les bords sont détectés, la page est redressée et enregistrée en PDF.",
+  "onbTitle2": "Tous vos outils au même endroit",
+  "onbText2": "Reconnaissance de texte, QR codes, fusion, compression, signature et protection de vos PDF.",
+  "onbTitle3": "Vos documents restent chez vous",
+  "onbText3": "Tout est traité sur l'appareil et fonctionne hors connexion. Un coffre-fort chiffré protège vos documents sensibles.",
+  "onbStart": "Commencer",
+  "foldersTitle": "Dossiers",
+  "folderNew": "Nouveau dossier",
+  "folderName": "Nom du dossier",
+  "folderDelete": "Supprimer le dossier",
+  "folderDeleteConfirm": "Supprimer le dossier « {name} » ?",
+  "@folderDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "folderDeleteMessage": "Ses documents seront replacés à la racine. Aucun document ne sera supprimé.",
+  "folderEmpty": "Ce dossier est vide",
+  "documentMove": "Déplacer vers…",
+  "folderRoot": "Racine (aucun dossier)",
+  "documentMoved": "Document déplacé",
+  "documentTags": "Étiquettes…",
+  "tagsHint": "Séparez les étiquettes par des virgules",
+  "tagsLabel": "Étiquettes",
+  "reviewCrop": "Recadrer",
+  "cropTitle": "Recadrer la page",
+  "cropHint": "Faites glisser les quatre coins sur les bords du document.",
+  "cropReset": "Page entière",
+  "cropInvalid": "Placez les coins de façon à former un quadrilatère.",
+  "toolAddText": "Ajouter du texte",
+  "toolAddTextHint": "Écrire une ligne sur une page",
+  "toolSign": "Signer",
+  "toolSignHint": "Apposer une signature manuscrite",
+  "toolPage": "Numéro de page",
+  "toolPageInvalid": "Numéro de page invalide.",
+  "toolText": "Texte à ajouter",
+  "toolPosition": "Position",
+  "posTop": "Haut",
+  "posMiddle": "Milieu",
+  "posBottom": "Bas",
+  "signDraw": "Signez dans le cadre",
+  "signClear": "Effacer",
+  "signEmpty": "Dessinez votre signature.",
+  "signLeft": "En bas à gauche",
+  "signRight": "En bas à droite",
+  "printFailed": "L'impression n'a pas pu démarrer."
 }

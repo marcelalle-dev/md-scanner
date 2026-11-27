@@ -16,13 +16,14 @@ import 'package:md_scanner/core/widgets/progress.dart';
 import 'package:md_scanner/core/widgets/state_views.dart';
 import 'package:md_scanner/features/document_vault/presentation/document_actions.dart';
 import 'package:md_scanner/features/security/l10n/generated/security_localizations.dart';
+import 'package:md_scanner/features/security/presentation/app_lock_gate.dart';
 import 'package:md_scanner/shared/models/document_entity.dart';
 import 'package:md_scanner/shared/providers/document_providers.dart';
 import 'package:pdfrx/pdfrx.dart';
 
 const DocumentQuery _vaultQuery = DocumentQuery(inVault: true);
 
-enum _VaultMenu { biometrics, removePin }
+enum _VaultMenu { biometrics, lockApp, removePin }
 
 enum _DocumentAction { open, remove }
 
@@ -92,6 +93,7 @@ class _VaultScreenState extends ConsumerState<VaultScreen>
         .watch(documentListProvider(_vaultQuery))
         .value
         ?.length;
+    final lockWholeApp = ref.watch(appLockSettingProvider).value ?? false;
 
     return Scaffold(
       appBar: AppBar(
@@ -116,6 +118,10 @@ class _VaultScreenState extends ConsumerState<VaultScreen>
                             enabled: !state.biometricEnabled,
                           );
                         }
+                      case _VaultMenu.lockApp:
+                        await ref
+                            .read(appLockSettingProvider.notifier)
+                            .set(enabled: !lockWholeApp);
                       case _VaultMenu.removePin:
                         await _removePin(vaultCount ?? 1);
                     }
@@ -125,6 +131,11 @@ class _VaultScreenState extends ConsumerState<VaultScreen>
                       value: _VaultMenu.biometrics,
                       checked: state.canUseBiometrics,
                       child: Text(l10n.vaultBiometricSetting),
+                    ),
+                    CheckedPopupMenuItem(
+                      value: _VaultMenu.lockApp,
+                      checked: lockWholeApp,
+                      child: Text(l10n.appLockSetting),
                     ),
                     PopupMenuItem(
                       value: _VaultMenu.removePin,

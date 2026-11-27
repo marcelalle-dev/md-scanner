@@ -4,6 +4,7 @@ import 'package:md_scanner/app/l10n/generated/app_localizations.dart';
 import 'package:md_scanner/app/routes.dart';
 import 'package:md_scanner/core/widgets/cards.dart';
 import 'package:md_scanner/features/ai_assistant/l10n/generated/ai_localizations.dart';
+import 'package:md_scanner/features/id_scanner/l10n/generated/id_scanner_localizations.dart';
 import 'package:md_scanner/features/ocr/l10n/generated/ocr_localizations.dart';
 import 'package:md_scanner/features/pdf_tools/presentation/pdf_tool.dart';
 import 'package:md_scanner/features/qr_scanner/l10n/generated/qr_localizations.dart';
@@ -28,6 +29,7 @@ class ToolsScreen extends StatelessWidget {
     final ocr = OcrLocalizations.of(context);
     final qr = QrLocalizations.of(context);
     final ai = AiLocalizations.of(context);
+    final id = IdScannerLocalizations.of(context);
     final security = SecurityLocalizations.of(context);
 
     final sections = <(String, List<_ToolEntry>)>[
@@ -39,6 +41,12 @@ class ToolsScreen extends StatelessWidget {
             ocr.ocrTitle,
             ocr.ocrToolHint,
             AppRoutes.ocr,
+          ),
+          _ToolEntry(
+            Icons.badge_outlined,
+            id.idTitle,
+            id.idHint,
+            AppRoutes.idScanner,
           ),
           _ToolEntry(
             Icons.auto_awesome_outlined,

@@ -5,7 +5,13 @@
   "premiumActive": "Votre Premium est actif",
   "premiumActiveLifetime": "Achat à vie",
   "premiumActiveUntil": "Valable jusqu'au {date}",
-  "@premiumActiveUntil": {"placeholders": {"date": {"type": "String"}}},
+  "@premiumActiveUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "premiumOfflineGrace": "Vérification en attente : reconnectez-vous à Internet pour confirmer votre abonnement.",
   "benefitNoAds": "Aucune publicité",
   "benefitDocx": "Export du texte reconnu en DOCX",
@@ -30,5 +36,9 @@
   "premiumEntry": "Premium",
   "premiumEntryHint": "Supprimer les publicités et débloquer les fonctions avancées",
   "premiumEntryActive": "Premium actif",
-  "adsPrivacy": "Choix de confidentialité publicitaire"
+  "adsPrivacy": "Choix de confidentialité publicitaire",
+  "rewardedTitle": "Export DOCX",
+  "rewardedMessage": "L'export DOCX est une fonction Premium. Vous pouvez aussi regarder une courte publicité pour exporter ce document une fois.",
+  "rewardedWatch": "Regarder une publicité",
+  "rewardedUnavailable": "Aucune publicité n'est disponible pour le moment."
 }

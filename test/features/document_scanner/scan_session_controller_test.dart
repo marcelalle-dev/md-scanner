@@ -285,6 +285,28 @@ void main() {
     expect(container.read(scanSessionProvider), isNull);
   });
 
+  test('a manual crop replaces the detected outline and is rendered', () async {
+    await controller().addFromGallery(ScanMode.document);
+    final page = session().pages.first;
+    const manual = Quad(
+      topLeft: NormalizedPoint(0.1, 0.1),
+      topRight: NormalizedPoint(0.9, 0.12),
+      bottomRight: NormalizedPoint(0.88, 0.9),
+      bottomLeft: NormalizedPoint(0.12, 0.92),
+    );
+
+    controller().setQuad(page.id, manual);
+    expect(session().pages.first.quad, manual);
+    expect(session().pages.first.cropAttempted, isFalse);
+
+    await controller().exportPdf('Recadré');
+    expect(images.renders.first.quad, manual);
+
+    await controller().addFromGallery(ScanMode.document);
+    controller().setQuad(session().pages.first.id, null);
+    expect(session().pages.first.quad, isNull);
+  });
+
   test('exporting without a session fails cleanly', () async {
     final result = await controller().exportPdf('Vide');
 

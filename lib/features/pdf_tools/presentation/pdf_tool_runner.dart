@@ -34,6 +34,10 @@ class ToolRequest {
     this.level = PdfCompressionLevel.balanced,
     this.quarterTurns = 1,
     this.inputPassword,
+    this.pageNumber,
+    this.verticalPosition = 2,
+    this.signaturePath,
+    this.signOnRight = true,
   });
 
   final PdfTool tool;
@@ -49,6 +53,17 @@ class ToolRequest {
 
   /// Password of the input PDF when it is protected.
   final String? inputPassword;
+
+  /// 1-based page targeted by the text and signature tools; null means the
+  /// last page.
+  final int? pageNumber;
+
+  /// 0 top, 1 middle, 2 bottom (text tool).
+  final int verticalPosition;
+
+  /// PNG of the handwritten signature (signature tool).
+  final String? signaturePath;
+  final bool signOnRight;
 }
 
 class ToolOutcome {
@@ -224,6 +239,48 @@ class PdfToolRunner {
           ),
         );
         return registerPdf(path, output.pageCount);
+      case PdfTool.addText:
+        final info = _unwrap(await _engine.inspect(input, password: password));
+        final path = newPdf();
+        final output = _unwrap(
+          await _engine.addText(
+            path: input,
+            outputPath: _storage.absolutePath(path),
+            texts: [
+              PdfTextStamp(
+                pageIndex: _pageIndex(request.pageNumber, info.pageCount),
+                text: request.text,
+                x: 0.1,
+                y: const [0.08, 0.5, 0.9][request.verticalPosition.clamp(0, 2)],
+              ),
+            ],
+            password: password,
+          ),
+        );
+        return registerPdf(path, output.pageCount);
+      case PdfTool.sign:
+        final info = _unwrap(await _engine.inspect(input, password: password));
+        final path = newPdf();
+        final output = _unwrap(
+          await _engine.stampImage(
+            path: input,
+            outputPath: _storage.absolutePath(path),
+            stamps: [
+              PdfImageStamp(
+                pageIndex: _pageIndex(request.pageNumber, info.pageCount),
+                imagePath: request.signaturePath!,
+                rect: PdfNormalizedRect(
+                  left: request.signOnRight ? 0.55 : 0.08,
+                  top: 0.82,
+                  width: 0.37,
+                  height: 0.12,
+                ),
+              ),
+            ],
+            password: password,
+          ),
+        );
+        return registerPdf(path, output.pageCount);
       case PdfTool.pdfToImages:
         return _pdfToImages(request, created, onProgress);
     }
@@ -270,6 +327,15 @@ class PdfToolRunner {
         await workDirectory.delete(recursive: true);
       }
     }
+  }
+
+  /// Converts a 1-based page number to an index; null targets the last page.
+  int _pageIndex(int? pageNumber, int pageCount) {
+    final number = pageNumber ?? pageCount;
+    if (number < 1 || number > pageCount) {
+      throw const FailureException(PdfFailure(PdfFailureKind.invalidPageRange));
+    }
+    return number - 1;
   }
 
   List<int> _indexes(List<PageRange> ranges, int pageCount) {

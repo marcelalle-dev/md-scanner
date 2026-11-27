@@ -12,10 +12,12 @@ import 'package:md_scanner/core/widgets/dialogs.dart';
 import 'package:md_scanner/core/widgets/feedback.dart';
 import 'package:md_scanner/core/widgets/progress.dart';
 import 'package:md_scanner/core/widgets/state_views.dart';
+import 'package:md_scanner/features/ads/data/ads_service.dart';
 import 'package:md_scanner/features/document_vault/presentation/document_actions.dart';
 import 'package:md_scanner/features/ocr/domain/ocr_service.dart';
 import 'package:md_scanner/features/ocr/domain/text_recognition.dart';
 import 'package:md_scanner/features/ocr/l10n/generated/ocr_localizations.dart';
+import 'package:md_scanner/features/premium/l10n/generated/premium_localizations.dart';
 import 'package:md_scanner/shared/models/document_entity.dart';
 import 'package:md_scanner/shared/providers/document_providers.dart';
 import 'package:md_scanner/shared/providers/entitlement.dart';
@@ -187,11 +189,38 @@ class _OcrEditorState extends ConsumerState<_OcrEditor> {
 
   Future<void> _export({required bool docx}) async {
     final l10n = OcrLocalizations.of(context);
-    // DOCX export is a Premium feature; TXT export is always free.
+    // DOCX export is a Premium feature; TXT export is always free. A free
+    // user may instead watch a rewarded ad to export this document once.
     if (docx &&
         !ref.read(hasPremiumFeatureProvider(PremiumFeature.docxExport))) {
-      await context.push(AppRoutes.premium);
-      return;
+      final premium = PremiumLocalizations.of(context);
+      final choice = await showActionSheet<bool>(
+        context,
+        title: premium.rewardedMessage,
+        actions: [
+          SheetAction(
+            value: true,
+            label: premium.rewardedWatch,
+            icon: Icons.smart_display_outlined,
+          ),
+          SheetAction(
+            value: false,
+            label: context.coreL10n.actionUnlockPremium,
+            icon: Icons.workspace_premium_outlined,
+          ),
+        ],
+      );
+      if (choice == null || !mounted) return;
+      if (!choice) {
+        await context.push(AppRoutes.premium);
+        return;
+      }
+      final earned = await ref.read(adsServiceProvider).showRewarded();
+      if (!mounted) return;
+      if (!earned) {
+        context.showMessage(premium.rewardedUnavailable);
+        return;
+      }
     }
     final result = docx
         ? await _service.exportDocx(widget.document.name, _text.text)

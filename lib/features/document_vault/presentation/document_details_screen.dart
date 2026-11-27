@@ -11,13 +11,14 @@ import 'package:md_scanner/core/utils/formatters.dart';
 import 'package:md_scanner/core/widgets/feedback.dart';
 import 'package:md_scanner/core/widgets/state_views.dart';
 import 'package:md_scanner/features/document_vault/presentation/document_actions.dart';
+import 'package:md_scanner/features/document_vault/presentation/document_organize.dart';
 import 'package:md_scanner/features/ocr/domain/ocr_service.dart';
 import 'package:md_scanner/features/ocr/l10n/generated/ocr_localizations.dart';
 import 'package:md_scanner/shared/models/document_entity.dart';
 import 'package:md_scanner/shared/providers/document_providers.dart';
 import 'package:pdfrx/pdfrx.dart';
 
-enum _Menu { ocr, rename, trash }
+enum _Menu { ocr, print, move, tags, rename, trash }
 
 /// Preview of one document with its actions.
 class DocumentDetailsScreen extends ConsumerWidget {
@@ -64,6 +65,12 @@ class DocumentDetailsScreen extends ConsumerWidget {
                         await context.push(
                           AppRoutes.withDocument(AppRoutes.ocr, document.id),
                         );
+                      case _Menu.print:
+                        await printDocument(context, ref, document);
+                      case _Menu.move:
+                        await moveDocument(context, ref, document);
+                      case _Menu.tags:
+                        await editDocumentTags(context, ref, document);
                       case _Menu.rename:
                         await renameDocument(context, ref, document);
                       case _Menu.trash:
@@ -83,6 +90,19 @@ class DocumentDetailsScreen extends ConsumerWidget {
                           OcrLocalizations.of(context).ocrExtractText,
                         ),
                       ),
+                    if (document.fileType == DocumentFileType.pdf)
+                      PopupMenuItem(
+                        value: _Menu.print,
+                        child: Text(core.actionPrint),
+                      ),
+                    PopupMenuItem(
+                      value: _Menu.move,
+                      child: Text(l10n.documentMove),
+                    ),
+                    PopupMenuItem(
+                      value: _Menu.tags,
+                      child: Text(l10n.documentTags),
+                    ),
                     PopupMenuItem(
                       value: _Menu.rename,
                       child: Text(l10n.documentRename),
@@ -101,6 +121,7 @@ class DocumentDetailsScreen extends ConsumerWidget {
         data: (value) => Column(
           children: [
             Expanded(child: _Preview(document: value)),
+            _TagRow(documentId: value.id),
             SafeArea(
               top: false,
               child: Padding(
@@ -120,6 +141,33 @@ class DocumentDetailsScreen extends ConsumerWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _TagRow extends ConsumerWidget {
+  const _TagRow({required this.documentId});
+
+  final String documentId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final tags = ref.watch(documentTagsProvider(documentId)).value ?? const [];
+    if (tags.isEmpty) return const SizedBox.shrink();
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
+      child: Row(
+        spacing: AppSpacing.xxs,
+        children: [
+          for (final tag in tags)
+            Chip(
+              avatar: const Icon(Icons.sell_outlined, size: 16),
+              label: Text(tag.name),
+              visualDensity: VisualDensity.compact,
+            ),
+        ],
       ),
     );
   }

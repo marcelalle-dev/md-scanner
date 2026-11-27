@@ -102,4 +102,17 @@ class PremiumLocalizationsEn extends PremiumLocalizations {
 
   @override
   String get adsPrivacy => 'Ad privacy choices';
+
+  @override
+  String get rewardedTitle => 'DOCX export';
+
+  @override
+  String get rewardedMessage =>
+      'DOCX export is a Premium feature. You can also watch a short ad to export this document once.';
+
+  @override
+  String get rewardedWatch => 'Watch an ad';
+
+  @override
+  String get rewardedUnavailable => 'No ad is available right now.';
 }
