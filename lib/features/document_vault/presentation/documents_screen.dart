@@ -85,6 +85,7 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen> {
   final TextEditingController _search = TextEditingController();
   _SortOption _sort = _SortOption.newest;
   bool _favoritesOnly = false;
+  String? _tagId;
 
   @override
   void dispose() {
@@ -155,11 +156,15 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen> {
     final l10n = AppLocalizations.of(context);
     final folderId = widget.folderId;
     final query = _search.text.trim();
-    final filtered = query.isNotEmpty || _favoritesOnly;
+    final tags = ref.watch(allTagsProvider).value ?? const <TagEntity>[];
+    // A tag deleted elsewhere must not leave an invisible filter behind.
+    final tagId = tags.any((tag) => tag.id == _tagId) ? _tagId : null;
+    final filtered = query.isNotEmpty || _favoritesOnly || tagId != null;
     final provider = documentListProvider(
       DocumentQuery(
         search: query.isEmpty ? null : query,
         favoritesOnly: _favoritesOnly,
+        tagId: tagId,
         sort: _sort.sort,
         restrictToFolder: !filtered,
         folderId: filtered ? null : folderId,
@@ -235,16 +240,27 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen> {
               ),
             ),
           ),
-          Align(
-            alignment: AlignmentDirectional.centerStart,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-              child: FilterChip(
-                avatar: const Icon(Icons.star_outline, size: 18),
-                label: Text(l10n.documentsFavoritesOnly),
-                selected: _favoritesOnly,
-                onSelected: (value) => setState(() => _favoritesOnly = value),
-              ),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+            child: Row(
+              spacing: AppSpacing.xs,
+              children: [
+                FilterChip(
+                  avatar: const Icon(Icons.star_outline, size: 18),
+                  label: Text(l10n.documentsFavoritesOnly),
+                  selected: _favoritesOnly,
+                  onSelected: (value) => setState(() => _favoritesOnly = value),
+                ),
+                for (final tag in tags)
+                  FilterChip(
+                    avatar: const Icon(Icons.sell_outlined, size: 16),
+                    label: Text(tag.name),
+                    selected: tagId == tag.id,
+                    onSelected: (selected) =>
+                        setState(() => _tagId = selected ? tag.id : null),
+                  ),
+              ],
             ),
           ),
           Expanded(

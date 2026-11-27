@@ -16,19 +16,19 @@ MD SCANNER transforme un smartphone en scanner de documents : capture avec déte
 
 Cette section fait foi.
 
-> **Aucun test sur appareil réel n'a encore été effectué.** La logique est couverte par 353 tests automatisés (plus 93 pour le backend) exécutés sur poste de développement, et l'APK se construit. La caméra, le scanner et l'OCR de Google, la biométrie, les achats et les publicités ne s'exécutent que sur un téléphone : ils restent à valider.
+> **Aucun test sur appareil réel n'a encore été effectué.** La logique est couverte par 356 tests automatisés (plus 93 pour le backend) exécutés sur poste de développement, et l'APK se construit. La caméra, le scanner et l'OCR de Google, la biométrie, les achats et les publicités ne s'exécutent que sur un téléphone : ils restent à valider.
 
 ### Terminé
 
 | Domaine | Contenu | Vérification |
 | --- | --- | --- |
-| Numérisation | Scanner Google ML Kit, import de photos avec détection et redressement, recadrage manuel des quatre coins, 5 modes de capture, 6 filtres, gestion multipage, export PDF et JPG | Tests hôte |
+| Numérisation | Scanner Google ML Kit, import de photos avec détection et redressement, recadrage manuel des quatre coins, réglages de luminosité, contraste et saturation par page, 5 modes de capture, 6 filtres, gestion multipage, export PDF et JPG | Tests hôte |
 | Moteur PDF et 12 outils | Images ↔ PDF, fusion, extraction, compression, rotation, protection AES-256, déverrouillage, filigrane, numérotation, ajout de texte, signature manuscrite ; impression | Tests hôte du moteur, sorties relues par PDFium ; signature et impression non exécutées |
 | OCR | Reconnaissance hors ligne (alphabet latin), PDF page par page, correction manuelle, recherche insensible aux accents, export TXT et DOCX | Tests hôte ; moteur ML Kit non exécuté |
 | QR codes et codes-barres | Lecture caméra et image (QR, Data Matrix, Aztec, PDF417, EAN, UPC, Code 128, Code 39), lampe, zoom, analyse de sécurité des liens, historique, génération avec export PNG | Tests hôte ; caméra non exécutée |
-| Bibliothèque | SQLite, import, dossiers imbriqués, étiquettes, recherche (noms et texte reconnu), tri, favoris, aperçu, partage, corbeille, sauvegarde | Tests hôte |
+| Bibliothèque | SQLite, import, dossiers imbriqués, étiquettes avec filtre, recherche (noms et texte reconnu), tri, favoris, aperçu, partage, corbeille, sauvegarde | Tests hôte |
 | Pièces d'identité | Capture recto et verso, lecture des zones MRZ (passeports et cartes, clés de contrôle vérifiées), repérage des dates et numéros à défaut, export PDF ; rien n'est conservé sans enregistrement | Tests hôte de l'analyse ; capture non exécutée |
-| Coffre-fort et verrouillage | Code PIN (empreinte Argon2id, tentatives limitées), biométrie, chiffrement AES-256-GCM par blocs, verrouillage à la mise en arrière-plan, protection contre les captures d'écran, verrouillage facultatif de toute l'application | Tests hôte (chiffrement, falsification) ; biométrie et Keystore non exécutés |
+| Coffre-fort et verrouillage | Code PIN (empreinte Argon2id, tentatives limitées), biométrie, chiffrement AES-256-GCM par blocs, verrouillage à la mise en arrière-plan, protection contre les captures d'écran, verrouillage facultatif de toute l'application, effacement complet des données | Tests hôte (chiffrement, falsification) ; biométrie et Keystore non exécutés |
 | Premium | Google Play Billing : offres et prix lus sur le Play Store, vérification avant octroi, restauration, révocation, tolérance hors ligne de 3 jours | Tests hôte avec doublure du Play Store |
 | Publicités | AdMob après consentement (UMP), bannière dans son propre emplacement, interstitiel plafonné après une tâche terminée, annonce avec récompense pour un export DOCX ponctuel, rien pour les abonnés | Politique testée ; SDK non exécuté |
 | Assistant | Repérage local des dates et montants ; client du backend IA avec consentement explicite | Tests hôte avec faux serveur |
@@ -48,9 +48,7 @@ Cette section fait foi.
 
 ### Non réalisé
 
-- Réglages fins de luminosité et de contraste dans l'interface (présents dans le moteur).
 - Placement libre de la signature et du texte sur la page (positions prédéfinies seulement).
-- Effacement global des données depuis l'application.
 - Tests d'intégration sur appareil et tests de performance.
 
 L'application n'est **pas publiée** sur Google Play.

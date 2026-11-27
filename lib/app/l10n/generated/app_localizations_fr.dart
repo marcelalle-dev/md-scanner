@@ -623,4 +623,42 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get printFailed => 'L\'impression n\'a pas pu démarrer.';
+
+  @override
+  String get reviewAdjust => 'Réglages';
+
+  @override
+  String get adjustBrightness => 'Luminosité';
+
+  @override
+  String get adjustContrast => 'Contraste';
+
+  @override
+  String get adjustSaturation => 'Saturation';
+
+  @override
+  String get adjustReset => 'Réinitialiser';
+
+  @override
+  String get wipeTitle => 'Effacer toutes mes données';
+
+  @override
+  String get wipeHint =>
+      'Documents, coffre-fort, historiques, code PIN et réglages';
+
+  @override
+  String get wipeConfirmTitle => 'Tout effacer ?';
+
+  @override
+  String get wipeConfirmMessage =>
+      'Tous vos documents, y compris ceux du coffre-fort, les historiques, le code PIN et vos réglages seront supprimés définitivement de cet appareil. Cette action est irréversible.\n\nVotre abonnement Premium, géré par Google Play, n\'est pas affecté.';
+
+  @override
+  String get wipeConfirm => 'Tout effacer';
+
+  @override
+  String get wipeRunning => 'Effacement en cours…';
+
+  @override
+  String get wipeDone => 'Toutes vos données ont été effacées';
 }

@@ -190,5 +190,17 @@
   "signEmpty": "Draw your signature.",
   "signLeft": "Bottom left",
   "signRight": "Bottom right",
-  "printFailed": "Printing could not start."
+  "printFailed": "Printing could not start.",
+  "reviewAdjust": "Adjust",
+  "adjustBrightness": "Brightness",
+  "adjustContrast": "Contrast",
+  "adjustSaturation": "Saturation",
+  "adjustReset": "Reset",
+  "wipeTitle": "Erase all my data",
+  "wipeHint": "Documents, vault, histories, PIN and settings",
+  "wipeConfirmTitle": "Erase everything?",
+  "wipeConfirmMessage": "All your documents, including those in the vault, the histories, the PIN and your settings will be permanently deleted from this device. This cannot be undone.\n\nYour Premium subscription, managed by Google Play, is not affected.",
+  "wipeConfirm": "Erase everything",
+  "wipeRunning": "Erasing…",
+  "wipeDone": "All your data has been erased"
 }

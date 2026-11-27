@@ -19,6 +19,7 @@ import 'package:md_scanner/features/image_editor/domain/image_adjustments.dart';
 import 'package:md_scanner/features/image_editor/domain/image_models.dart';
 import 'package:md_scanner/features/image_editor/domain/image_processor.dart';
 import 'package:md_scanner/features/image_editor/domain/scan_mode.dart';
+import 'package:md_scanner/features/image_editor/presentation/adjustments_sheet.dart';
 import 'package:md_scanner/features/image_editor/presentation/crop_screen.dart';
 
 String scanFilterLabel(AppLocalizations l10n, ScanFilter filter) =>
@@ -212,6 +213,7 @@ class _ScanReviewScreenState extends ConsumerState<ScanReviewScreen> {
                     index: index,
                     page: page,
                     preview: _preview(page, session.mode),
+                    mode: session.mode,
                   );
                 },
               ),
@@ -258,12 +260,14 @@ class _PageCard extends ConsumerWidget {
     required this.index,
     required this.page,
     required this.preview,
+    required this.mode,
     super.key,
   });
 
   final int index;
   final ScanPage page;
   final Future<Result<Uint8List>> preview;
+  final ScanMode mode;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -343,12 +347,28 @@ class _PageCard extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    Row(
+                    Wrap(
                       children: [
                         IconButton(
                           tooltip: l10n.reviewRotate,
                           icon: const Icon(Icons.rotate_90_degrees_cw_outlined),
                           onPressed: () => controller.rotate(page.id),
+                        ),
+                        IconButton(
+                          tooltip: l10n.reviewAdjust,
+                          icon: const Icon(Icons.tune),
+                          onPressed: () async {
+                            final adjusted = await showAdjustmentsSheet(
+                              context,
+                              sourcePath: page.sourcePath,
+                              initial: page.adjustments,
+                              mode: mode,
+                              quad: page.quad,
+                            );
+                            if (adjusted != null) {
+                              controller.setAdjustments(page.id, adjusted);
+                            }
+                          },
                         ),
                         IconButton(
                           tooltip: l10n.reviewCrop,

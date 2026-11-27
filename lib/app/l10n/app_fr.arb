@@ -249,5 +249,17 @@
   "signEmpty": "Dessinez votre signature.",
   "signLeft": "En bas à gauche",
   "signRight": "En bas à droite",
-  "printFailed": "L'impression n'a pas pu démarrer."
+  "printFailed": "L'impression n'a pas pu démarrer.",
+  "reviewAdjust": "Réglages",
+  "adjustBrightness": "Luminosité",
+  "adjustContrast": "Contraste",
+  "adjustSaturation": "Saturation",
+  "adjustReset": "Réinitialiser",
+  "wipeTitle": "Effacer toutes mes données",
+  "wipeHint": "Documents, coffre-fort, historiques, code PIN et réglages",
+  "wipeConfirmTitle": "Tout effacer ?",
+  "wipeConfirmMessage": "Tous vos documents, y compris ceux du coffre-fort, les historiques, le code PIN et vos réglages seront supprimés définitivement de cet appareil. Cette action est irréversible.\n\nVotre abonnement Premium, géré par Google Play, n'est pas affecté.",
+  "wipeConfirm": "Tout effacer",
+  "wipeRunning": "Effacement en cours…",
+  "wipeDone": "Toutes vos données ont été effacées"
 }

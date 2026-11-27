@@ -9,6 +9,9 @@ abstract interface class SecureKeyStore {
   Future<void> write(String key, String value);
 
   Future<void> delete(String key);
+
+  /// Removes every secret (data wipe).
+  Future<void> deleteAll();
 }
 
 class FlutterSecureKeyStore implements SecureKeyStore {
@@ -25,6 +28,9 @@ class FlutterSecureKeyStore implements SecureKeyStore {
 
   @override
   Future<void> delete(String key) => _storage.delete(key: key);
+
+  @override
+  Future<void> deleteAll() => _storage.deleteAll();
 }
 
 final secureKeyStoreProvider = Provider<SecureKeyStore>(

@@ -27,6 +27,9 @@ class _MemoryKeyStore implements SecureKeyStore {
 
   @override
   Future<void> delete(String key) async => values.remove(key);
+
+  @override
+  Future<void> deleteAll() async => values.clear();
 }
 
 /// Small Argon2 cost so the suite stays fast; the algorithm is the same.

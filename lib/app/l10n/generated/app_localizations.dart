@@ -1243,6 +1243,78 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'L\'impression n\'a pas pu démarrer.'**
   String get printFailed;
+
+  /// No description provided for @reviewAdjust.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réglages'**
+  String get reviewAdjust;
+
+  /// No description provided for @adjustBrightness.
+  ///
+  /// In fr, this message translates to:
+  /// **'Luminosité'**
+  String get adjustBrightness;
+
+  /// No description provided for @adjustContrast.
+  ///
+  /// In fr, this message translates to:
+  /// **'Contraste'**
+  String get adjustContrast;
+
+  /// No description provided for @adjustSaturation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Saturation'**
+  String get adjustSaturation;
+
+  /// No description provided for @adjustReset.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réinitialiser'**
+  String get adjustReset;
+
+  /// No description provided for @wipeTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Effacer toutes mes données'**
+  String get wipeTitle;
+
+  /// No description provided for @wipeHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Documents, coffre-fort, historiques, code PIN et réglages'**
+  String get wipeHint;
+
+  /// No description provided for @wipeConfirmTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tout effacer ?'**
+  String get wipeConfirmTitle;
+
+  /// No description provided for @wipeConfirmMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tous vos documents, y compris ceux du coffre-fort, les historiques, le code PIN et vos réglages seront supprimés définitivement de cet appareil. Cette action est irréversible.\n\nVotre abonnement Premium, géré par Google Play, n\'est pas affecté.'**
+  String get wipeConfirmMessage;
+
+  /// No description provided for @wipeConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tout effacer'**
+  String get wipeConfirm;
+
+  /// No description provided for @wipeRunning.
+  ///
+  /// In fr, this message translates to:
+  /// **'Effacement en cours…'**
+  String get wipeRunning;
+
+  /// No description provided for @wipeDone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Toutes vos données ont été effacées'**
+  String get wipeDone;
 }
 
 class _AppLocalizationsDelegate

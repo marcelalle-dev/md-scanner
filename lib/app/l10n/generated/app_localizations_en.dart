@@ -621,4 +621,41 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get printFailed => 'Printing could not start.';
+
+  @override
+  String get reviewAdjust => 'Adjust';
+
+  @override
+  String get adjustBrightness => 'Brightness';
+
+  @override
+  String get adjustContrast => 'Contrast';
+
+  @override
+  String get adjustSaturation => 'Saturation';
+
+  @override
+  String get adjustReset => 'Reset';
+
+  @override
+  String get wipeTitle => 'Erase all my data';
+
+  @override
+  String get wipeHint => 'Documents, vault, histories, PIN and settings';
+
+  @override
+  String get wipeConfirmTitle => 'Erase everything?';
+
+  @override
+  String get wipeConfirmMessage =>
+      'All your documents, including those in the vault, the histories, the PIN and your settings will be permanently deleted from this device. This cannot be undone.\n\nYour Premium subscription, managed by Google Play, is not affected.';
+
+  @override
+  String get wipeConfirm => 'Erase everything';
+
+  @override
+  String get wipeRunning => 'Erasing…';
+
+  @override
+  String get wipeDone => 'All your data has been erased';
 }

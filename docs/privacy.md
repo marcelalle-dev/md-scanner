@@ -77,7 +77,7 @@ Un document ne quitte l'application que lorsque vous utilisez **Partager** ou **
 
 - Documents : corbeille, puis suppression définitive.
 - Historique des codes : *Outils → Historique des codes → Effacer*.
-- Tout effacer : désinstaller l'application ou effacer ses données dans les réglages d'Android.
+- Tout effacer : *Profil → Effacer toutes mes données* supprime documents, coffre-fort, historiques, code PIN et réglages. Désinstaller l'application a le même effet.
 
 Si vous oubliez le code PIN du coffre-fort, son contenu ne peut pas être récupéré.
 

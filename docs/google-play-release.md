@@ -123,7 +123,7 @@ Avec les secrets de signature configurés dans GitHub, le workflow `release.yml`
 | Documents, photos, texte extrait | **Non** : traités et stockés sur l'appareil | Non | — |
 | Texte envoyé à l'assistant IA | Seulement si l'utilisateur y consent, pour la requête en cours | Avec votre backend et le fournisseur d'IA ; non conservé | Fonctionnalité de l'application |
 
-Cochez « les données sont chiffrées en transit » et indiquez comment l'utilisateur supprime ses données (corbeille de l'application, puis désinstallation ou effacement des données dans les réglages d'Android).
+Cochez « les données sont chiffrées en transit » et indiquez comment l'utilisateur supprime ses données (dans l'application : *Profil → Effacer toutes mes données*).
 
 ### Autres déclarations
 

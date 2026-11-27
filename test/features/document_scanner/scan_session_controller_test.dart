@@ -307,6 +307,29 @@ void main() {
     expect(session().pages.first.quad, isNull);
   });
 
+  test('fine-tuning a page is kept and used when rendering', () async {
+    await controller().addFromCamera(ScanMode.document);
+    final page = session().pages.first;
+    final tuned = page.adjustments.copyWith(
+      brightness: 0.2,
+      contrast: -0.3,
+      saturation: 0.5,
+    );
+
+    controller().setAdjustments(page.id, tuned);
+    controller().rotate(page.id);
+
+    final updated = session().pages.first.adjustments;
+    expect(updated.brightness, 0.2);
+    expect(updated.contrast, -0.3);
+    expect(updated.saturation, 0.5);
+    expect(updated.quarterTurns, 1);
+    expect(session().pages[1].adjustments, ImageAdjustments.none);
+
+    await controller().exportPdf('Réglé');
+    expect(images.renders.first.adjustments, updated);
+  });
+
   test('exporting without a session fails cleanly', () async {
     final result = await controller().exportPdf('Vide');
 

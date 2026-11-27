@@ -6,13 +6,18 @@ import 'package:md_scanner/app/configuration/app_config.dart';
 import 'package:md_scanner/app/l10n/generated/app_localizations.dart';
 import 'package:md_scanner/app/routes.dart';
 import 'package:md_scanner/core/errors/result.dart';
+import 'package:md_scanner/core/security/data_wipe_service.dart';
+import 'package:md_scanner/core/security/vault_lock.dart';
 import 'package:md_scanner/core/storage/file_storage.dart';
 import 'package:md_scanner/core/utils/formatters.dart';
 import 'package:md_scanner/core/widgets/cards.dart';
+import 'package:md_scanner/core/widgets/dialogs.dart';
 import 'package:md_scanner/core/widgets/feedback.dart';
 import 'package:md_scanner/core/widgets/progress.dart';
 import 'package:md_scanner/features/ads/data/ads_service.dart';
 import 'package:md_scanner/features/premium/l10n/generated/premium_localizations.dart';
+import 'package:md_scanner/features/qr_scanner/data/code_history_repository.dart';
+import 'package:md_scanner/features/security/presentation/app_lock_gate.dart';
 import 'package:md_scanner/shared/providers/app_settings.dart';
 import 'package:md_scanner/shared/providers/entitlement.dart';
 import 'package:md_scanner/shared/repositories/document_repository.dart';
@@ -104,6 +109,40 @@ class ProfileScreen extends ConsumerWidget {
     }
   }
 
+  Future<void> _wipe(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await showConfirmDialog(
+      context,
+      title: l10n.wipeConfirmTitle,
+      message: l10n.wipeConfirmMessage,
+      confirmLabel: l10n.wipeConfirm,
+      destructive: true,
+    );
+    if (!confirmed || !context.mounted) return;
+    final result = await runWithProgress(
+      context,
+      message: l10n.wipeRunning,
+      task: (_) => ref.read(dataWipeServiceProvider).wipeEverything(),
+    );
+    if (!context.mounted) return;
+    switch (result) {
+      case Success():
+        // Preferences were erased: bring the running app back to defaults.
+        // The introduction is not replayed.
+        final settings = ref.read(appSettingsProvider.notifier);
+        await settings.setThemeMode(ThemeMode.system);
+        await settings.setLocale(null);
+        await settings.completeOnboarding();
+        ref
+          ..invalidate(vaultLockProvider)
+          ..invalidate(appLockSettingProvider)
+          ..invalidate(codeHistoryProvider);
+        if (context.mounted) context.showMessage(l10n.wipeDone);
+      case Err(:final failure):
+        context.showFailure(failure);
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
@@ -180,6 +219,15 @@ class ProfileScreen extends ConsumerWidget {
             title: Text(l10n.backupRestore),
             subtitle: Text(l10n.backupRestoreHint),
             onTap: () => _restoreBackup(context, ref),
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.delete_forever_outlined,
+              color: Theme.of(context).colorScheme.error,
+            ),
+            title: Text(l10n.wipeTitle),
+            subtitle: Text(l10n.wipeHint),
+            onTap: () => _wipe(context, ref),
           ),
           _Section(l10n.profileAbout),
           ListTile(

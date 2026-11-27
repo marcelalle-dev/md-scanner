@@ -192,6 +192,15 @@ class ScanSessionController extends Notifier<ScanSession?> {
     ],
   );
 
+  /// Replaces the fine-tuning (brightness, contrast, saturation) of a page.
+  void setAdjustments(String pageId, ImageAdjustments adjustments) =>
+      _updatePages(
+        (pages) => [
+          for (final page in pages)
+            page.id == pageId ? page.copyWith(adjustments: adjustments) : page,
+        ],
+      );
+
   void duplicate(String pageId) => _updatePages((pages) {
     final index = pages.indexWhere((page) => page.id == pageId);
     if (index >= 0) {
