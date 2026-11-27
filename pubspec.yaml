@@ -96,6 +96,7 @@ flutter:
 
   assets:
     - assets/brand/icon_foreground.png
+    - assets/fonts/Inter-LICENSE.txt
 
   fonts:
     - family: Inter

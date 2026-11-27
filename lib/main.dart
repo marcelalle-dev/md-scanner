@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
+import 'package:md_scanner/app/bootstrap.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-}
+void main() => bootstrap();
