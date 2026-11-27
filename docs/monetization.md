@@ -1,6 +1,6 @@
 # Monétisation
 
-> **État : non implémenté.** La version actuelle n'affiche aucune publicité et ne propose aucun achat. Ce document fixe le modèle retenu et ce qui est déjà préparé.
+> **État : implémenté, non éprouvé en conditions réelles.** Les règles sont couvertes par des tests avec une doublure du Play Store. Un achat réel exige des produits créés dans la Play Console et une version installée depuis Google Play ; des annonces réelles exigent vos identifiants AdMob.
 
 ## Modèle freemium
 
@@ -23,31 +23,36 @@ Les fonctions essentielles de numérisation ne sont jamais bloquées.
 
 Les prix se définissent dans la Play Console et ne figurent jamais dans le code.
 
-## Déjà en place
+## Achats — ce que fait l'application
 
-- Dépendances `in_app_purchase` et `google_mobile_ads` déclarées ; l'application se construit avec elles.
-- Identifiant d'application AdMob injecté dans le manifest au build. Par défaut : l'identifiant d'exemple public de Google, qui ne sert que des annonces de test. Aucun identifiant de production n'a été inventé.
-- Contrat d'abonnement (`lib/shared/providers/entitlement.dart`) : l'état Premium porte sa **provenance** (`playStore`, `server`, `offlineGrace`) et ne peut être écrit que par le futur service de facturation — jamais par un simple indicateur local.
-- Table `subscription_cache` : dernier état vérifié, avec l'empreinte SHA-256 du jeton d'achat, jamais le jeton.
-- Variables de build prévues : `ADMOB_BANNER_UNIT_ID`, `ADMOB_INTERSTITIAL_UNIT_ID`, `ADMOB_REWARDED_UNIT_ID`, `PURCHASE_VERIFICATION_URL`.
+- Les offres et leurs **prix viennent de Google Play** ; aucun prix n'est écrit dans le code.
+- Un achat est **vérifié avant** d'accorder le Premium, et acquitté seulement après. Un achat non vérifié n'est pas acquitté : Google le rembourse automatiquement.
+- À **chaque démarrage**, Google Play est réinterrogé. Un achat qu'il ne renvoie plus (expiré, annulé puis échu, remboursé) entraîne le retrait du Premium.
+- **Hors connexion**, le dernier état vérifié est toléré 3 jours, puis l'application repasse en gratuit.
+- Le statut Premium vit en mémoire et porte sa provenance (`playStore`, `server`, `offlineGrace`). Seul le service de facturation peut l'écrire.
+- Le jeton d'achat n'est jamais stocké ; seule son empreinte SHA-256 figure dans `subscription_cache`.
+- L'écran Premium affiche les avantages, les offres, la restauration des achats et le lien de gestion de l'abonnement sur Google Play.
 
-## Règles à respecter lors de l'implémentation
+### Vérification serveur
 
-### Achats
+Sans `PURCHASE_VERIFICATION_URL`, la vérification se fait sur l'appareil : seul un achat que la bibliothèque Play Billing déclare « acheté » est accepté. C'est plus faible (remboursements vus tardivement, exposition sur appareil rooté). Avec l'URL configurée, l'application interroge le backend, qui consulte l'API Google Play Developer.
 
-- Vérifier un achat **avant** d'accorder le Premium, et ne l'acquitter qu'après vérification.
-- Réinterroger Google Play à chaque démarrage : un abonnement que Play ne renvoie plus est révoqué.
-- Hors connexion, tolérer le dernier état vérifié pendant 3 jours au plus.
-- Prévoir la vérification serveur (API Google Play Developer), seule à détecter les remboursements.
-- Afficher prix, période, conditions de renouvellement, bouton de restauration et lien de gestion de l'abonnement.
+### Fonctions réservées à Premium
 
-### Publicités
+Suppression des publicités, export DOCX, couleurs personnalisées des QR codes, assistant IA. La numérisation, l'export PDF/JPG, l'OCR, l'export TXT, les codes, les outils PDF et le coffre-fort restent gratuits.
 
-- Bannière discrète, interstitiel plafonné, annonce avec récompense.
-- Jamais pendant la capture, jamais pendant un export, jamais par-dessus un document.
-- Aucune annonce pour les abonnés Premium.
-- Recueil du consentement (plateforme UMP de Google) avant toute demande d'annonce.
-- Identifiants de test pendant le développement ; ne jamais cliquer sur ses propres annonces.
+## Publicités — ce que fait l'application
+
+- Rien n'est demandé à AdMob avant que la plateforme de consentement de Google (UMP) ne l'autorise ; son formulaire s'affiche quand la région l'exige, et reste accessible depuis le profil.
+- Le Premium est vérifié **avant** l'initialisation des publicités : un abonné ne voit ni formulaire ni annonce.
+- **Bannière** adaptative sur l'accueil et la bibliothèque, dans son propre emplacement : elle ne recouvre jamais un document.
+- **Interstitiel** uniquement après une tâche terminée (document enregistré, outil PDF achevé) ; jamais pendant la capture ni pendant un export. Plafonds : aucun pendant la première minute, au moins 3 minutes et 3 tâches entre deux, 4 par session.
+- Sans identifiants fournis au build, les blocs de **test** officiels de Google sont utilisés. Aucun identifiant de production n'a été inventé.
+- Un échec de chargement n'affecte jamais l'application.
+
+Non réalisé : l'annonce avec récompense.
+
+Variables de build : `ADMOB_BANNER_UNIT_ID`, `ADMOB_INTERSTITIAL_UNIT_ID`, `ADS_ENABLED`, et `ADMOB_APP_ID` pour le manifest (voir [installation.md](installation.md)).
 
 ## À fournir par l'éditeur
 

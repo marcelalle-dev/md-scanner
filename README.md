@@ -2,7 +2,7 @@
 
 Application Android de numérisation et de gestion documentaire, éditée par **MarcelAlle.Dev**.
 
-MD SCANNER transforme un smartphone en scanner de documents : capture avec détection des bords, PDF multipages, boîte à outils PDF et bibliothèque locale. Tout fonctionne hors connexion ; les documents ne quittent pas l'appareil.
+MD SCANNER transforme un smartphone en scanner de documents : capture avec détection des bords, PDF multipages, OCR, QR codes, boîte à outils PDF, bibliothèque locale et coffre-fort chiffré. Les fonctions de numérisation, PDF, OCR, codes et coffre-fort fonctionnent hors connexion.
 
 | Élément | Valeur |
 | --- | --- |
@@ -14,43 +14,45 @@ MD SCANNER transforme un smartphone en scanner de documents : capture avec déte
 
 ## État d'avancement
 
-Cette section fait foi. Elle distingue ce qui fonctionne, ce qui est vérifié seulement par des tests sur poste de développement, et ce qui reste à faire.
+Cette section fait foi.
 
-> **Aucun test sur appareil réel n'a encore été effectué.** La logique est couverte par 279 tests automatisés exécutés sur poste de développement, et l'APK se construit ; la caméra, le scanner Google et le rendu sur téléphone restent à valider sur un appareil.
+> **Aucun test sur appareil réel n'a encore été effectué.** La logique est couverte par 342 tests automatisés exécutés sur poste de développement, et l'APK se construit. La caméra, le scanner et l'OCR de Google, la biométrie, les achats et les publicités ne s'exécutent que sur un téléphone : ils restent à valider.
 
 ### Terminé
 
 | Domaine | Contenu | Vérification |
 | --- | --- | --- |
-| Numérisation | Scanner de documents Google ML Kit (détection des bords, recadrage, multipage), import de photos avec détection et redressement maison, 5 modes de capture, réorganisation / duplication / rotation / suppression des pages, 6 filtres, export PDF et JPG | Tests hôte ; scanner ML Kit non exécuté sur appareil |
-| Traitement d'image | Détection de contour, correction de perspective par homographie, niveaux de gris, noir et blanc adaptatif, lisibilité, suppression des ombres, hors du thread d'interface | Tests hôte sur images synthétiques |
-| Moteur PDF | Images → PDF, PDF → images, fusion, extraction, suppression, réordonnancement, rotation, compression à 3 niveaux, filigrane, numérotation, ajout de texte et d'image, protection AES-256, déverrouillage | Tests hôte, sorties relues par PDFium |
-| Outils PDF (interface) | 10 outils : images vers PDF, fusion, extraction de pages, compression, rotation, protection, déverrouillage, filigrane, numérotation, PDF vers images | Tests hôte de la logique |
-| Bibliothèque | Persistance SQLite, import de fichiers, recherche, tri, favoris, renommage, aperçu PDF / image / texte, partage, corbeille et restauration | Tests hôte |
-| Sauvegarde | Export et restauration d'une archive zip, nettoyage automatique des fichiers temporaires | Tests hôte |
-| Application | Navigation à 5 entrées, thème clair / sombre / automatique, français et anglais, icône adaptative, écran de démarrage | Tests de widgets |
-| Plateforme | Permissions minimales (caméra, Internet), aucune permission de stockage, signature de publication configurable | Manifest fusionné contrôlé |
+| Numérisation | Scanner Google ML Kit, import de photos avec détection et redressement, 5 modes de capture, 6 filtres, gestion multipage, export PDF et JPG | Tests hôte |
+| Moteur PDF et 10 outils | Images ↔ PDF, fusion, extraction, compression, rotation, protection AES-256, déverrouillage, filigrane, numérotation | Tests hôte, sorties relues par PDFium |
+| OCR | Reconnaissance hors ligne (alphabet latin), PDF page par page, correction manuelle, recherche insensible aux accents, export TXT et DOCX | Tests hôte ; moteur ML Kit non exécuté |
+| QR codes et codes-barres | Lecture caméra et image (QR, Data Matrix, Aztec, PDF417, EAN, UPC, Code 128, Code 39), lampe, zoom, analyse de sécurité des liens, historique, génération avec export PNG | Tests hôte ; caméra non exécutée |
+| Bibliothèque | SQLite, import, recherche (noms et texte reconnu), tri, favoris, aperçu, partage, corbeille, sauvegarde | Tests hôte |
+| Coffre-fort | Code PIN (empreinte Argon2id, tentatives limitées), biométrie, chiffrement AES-256-GCM par blocs, verrouillage à la mise en arrière-plan, protection contre les captures d'écran | Tests hôte (chiffrement, falsification) ; biométrie et Keystore non exécutés |
+| Premium | Google Play Billing : offres et prix lus sur le Play Store, vérification avant octroi, restauration, révocation, tolérance hors ligne de 3 jours | Tests hôte avec doublure du Play Store |
+| Publicités | AdMob après consentement (UMP), bannière dans son propre emplacement, interstitiel plafonné après une tâche terminée, rien pour les abonnés | Politique testée ; SDK non exécuté |
+| Assistant | Repérage local des dates et montants ; client du backend IA avec consentement explicite | Tests hôte avec faux serveur |
+| Application | Navigation à 5 entrées, thèmes, français et anglais, icône adaptative | Tests de widgets |
 | CI/CD | Workflows `ci`, `android-build`, `release` | Exécutés sur GitHub Actions |
 
-### Présent dans le moteur, pas encore dans l'interface
+### En attente d'éléments externes
 
-- Dossiers et étiquettes de la bibliothèque.
-- Recadrage manuel des quatre coins et réglages fins (luminosité, contraste, saturation).
-- Ajout de texte libre et signature manuscrite sur un PDF, impression.
+| Fonction | Ce qui manque |
+| --- | --- |
+| Achats Premium | Produits à créer dans la Play Console ; fonctionne seulement pour une version installée depuis Google Play |
+| Publicités réelles | Identifiants AdMob ; sans eux, seules des annonces de test s'affichent |
+| Assistant IA | Backend à terminer et déployer (`backend/` est une ébauche non versionnée) ; sans lui, l'assistant s'affiche comme indisponible |
+| Vérification serveur des achats | Même backend |
+| Publication | Keystore d'upload, compte développeur |
 
 ### Non réalisé
 
-| Module | État |
-| --- | --- |
-| OCR (reconnaissance de texte, export TXT / DOCX) | Non commencé |
-| Scanner et générateur de QR codes et codes-barres | Non commencé |
-| Scanner de pièces d'identité | Non commencé |
-| Coffre-fort, code PIN, biométrie, chiffrement des fichiers | Non commencé |
-| Premium (Google Play Billing) | Non commencé — aucun achat n'est proposé dans l'application |
-| Publicités (AdMob) | SDK et identifiant de test déclarés dans le manifest ; aucune annonce n'est affichée |
-| Assistant IA | Non commencé côté application ; ébauche de backend non relue dans `backend/` (non versionnée) |
-| Onboarding, écran de confidentialité intégré | Non commencé |
-| Tests d'intégration sur appareil, tests de performance | Non réalisés |
+- Scanner de pièces d'identité.
+- Dossiers et étiquettes dans l'interface (présents dans le moteur).
+- Recadrage manuel des coins, réglages fins de luminosité et de contraste.
+- Signature manuscrite et texte libre sur PDF, impression.
+- Annonce avec récompense.
+- Onboarding, verrouillage de l'application entière, effacement global des données depuis l'application.
+- Tests d'intégration sur appareil et tests de performance.
 
 L'application n'est **pas publiée** sur Google Play.
 
@@ -69,15 +71,13 @@ Détails, configuration et signature : [docs/installation.md](docs/installation.
 
 ```
 lib/
-  app/        démarrage, routeur, thème, navigation, textes de l'application
-  core/       erreurs typées, stockage, journal technique, widgets communs
-  shared/     modèles, dépôt de documents, sauvegarde
+  app/        démarrage, routeur, thème, navigation
+  core/       erreurs typées, stockage, sécurité, widgets communs
+  shared/     modèles, dépôt de documents, sauvegarde, abonnement
   features/
-    document_scanner/   capture et session de numérisation
-    image_editor/       moteur de traitement d'image
-    pdf_tools/          moteur et outils PDF
-    document_vault/     bibliothèque de documents
-    home/ settings/
+    document_scanner/  image_editor/  pdf_tools/  ocr/  qr_scanner/
+    document_vault/    security/      premium/    ads/  ai_assistant/
+    home/  settings/
 ```
 
 ## Documentation

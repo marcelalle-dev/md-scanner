@@ -1,6 +1,6 @@
 # Sécurité
 
-Ce document décrit ce qui est **en place** et ce qui est **prévu**. Le coffre-fort, le code PIN et la biométrie ne sont pas encore développés.
+Ce document décrit ce qui est **en place** et ses limites. Le chiffrement et le code PIN sont couverts par des tests sur poste de développement ; la biométrie et l'Android Keystore ne s'exécutent que sur un appareil et restent à valider.
 
 ## En place
 
@@ -36,21 +36,35 @@ Les fichiers de travail sont supprimés à la fin de chaque opération, y compri
 - Les secrets de signature de la CI ne sont lus que depuis les secrets GitHub et supprimés du runner après le build.
 - R8 est activé en release.
 
-## Prévu
+### Coffre-fort
 
-| Fonction | Conception retenue |
-| --- | --- |
-| Code PIN | Jamais stocké : empreinte Argon2id avec sel aléatoire, limitation des tentatives persistante |
-| Biométrie | Invite système AndroidX, biométrie seule |
-| Coffre-fort | Chiffrement AES-256-GCM par blocs avec clé conservée via l'Android Keystore |
-| Protection d'écran | `FLAG_SECURE` sur les écrans sensibles — le canal natif existe déjà |
-| Effacement des données | Suppression des documents, de la base et des clés |
+- **Code PIN** de 4 à 8 chiffres, jamais stocké : seule une empreinte Argon2id (19 Mio, 2 passes) avec sel aléatoire est conservée, dans le stockage sécurisé adossé à l'Android Keystore. La comparaison se fait en temps constant.
+- **Tentatives limitées** : après 5 échecs, blocage de 30 secondes, doublé à chaque nouvel échec jusqu'à 15 minutes. Le compteur survit au redémarrage de l'application.
+- **Chiffrement des fichiers** en AES-256-GCM par blocs de 1 Mio, sans jamais charger le fichier entier en mémoire. Chaque bloc authentifie l'en-tête, son rang et un indicateur de fin : modification, permutation de blocs et troncature sont détectées.
+- **Clé** aléatoire de 256 bits, générée une fois et conservée par le stockage sécurisé. Elle n'est pas dérivée du code PIN : changer de code ne rechiffre rien. Le code PIN protège l'accès dans l'application, le Keystore protège la clé au repos.
+- **Aperçu** : un document du coffre est déchiffré dans un fichier temporaire, supprimé dès le verrouillage.
+- **Verrouillage** automatique dès que l'application passe en arrière-plan ou que l'on quitte le coffre.
+- **Captures d'écran** bloquées (`FLAG_SECURE`) tant que le coffre est affiché.
+- **Biométrie** facultative, comme raccourci du code PIN (invite système AndroidX, biométrie seule).
+- Les documents du coffre sont exclus des sauvegardes et retirés de la bibliothèque, vignette comprise.
+
+### Liens scannés
+
+Un lien lu dans un QR code n'est jamais ouvert automatiquement. L'adresse complète est affichée avec un avis établi localement (http sans chiffrement, adresse IP, caractères trompeurs, identifiant caché, lien raccourci, téléchargement de programme…). Les schémas capables d'exécuter du code ou de lire des données locales (`javascript:`, `data:`, `file:`, `intent:`, `content:`…) sont bloqués.
+
+### Achats
+
+Le jeton d'achat n'est jamais écrit sur disque : seule son empreinte SHA-256 l'est. Le statut Premium n'est accordé qu'après vérification et retiré dès que Google Play ne confirme plus l'achat.
 
 ## Limites connues
 
-- Sans coffre-fort, un document n'est protégé que par le bac à sable d'Android et le verrouillage de l'appareil.
-- Aucun audit de sécurité externe n'a été réalisé.
-- Le plugin `cryptography_flutter`, déclaré pour le futur coffre-fort, utilise un mode de build Kotlin que de futures versions de Flutter refuseront ; il faudra le mettre à jour ou le remplacer.
+- Le code PIN est court par nature : sa résistance repose sur la limitation des tentatives et sur le Keystore, pas sur son entropie.
+- Un appareil rooté ou compromis sort du périmètre de protection.
+- Code PIN oublié : le contenu du coffre est irrécupérable, par conception.
+- Sans serveur de vérification, les achats sont vérifiés sur l'appareil : les remboursements ne sont détectés que lorsque Google Play cesse de renvoyer l'achat.
+- Aucun audit de sécurité externe n'a été réalisé, et aucun essai sur appareil.
+- Le plugin `cryptography_flutter`, qui accélère AES-GCM sur Android, utilise un mode de build Kotlin que de futures versions de Flutter refuseront ; il faudra le mettre à jour ou le remplacer.
+- Non réalisé : verrouillage de l'application entière, effacement global des données depuis l'application.
 
 ## Signaler une faille
 
