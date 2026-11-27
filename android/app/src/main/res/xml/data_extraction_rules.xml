@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Les documents de l'utilisateur ne quittent jamais l'appareil sans action explicite :
+     ni sauvegarde cloud automatique, ni transfert d'appareil à appareil. Les clés du coffre-fort
+     vivent dans l'Android Keystore et ne seraient de toute façon pas restaurables ailleurs.
+     La sauvegarde volontaire se fait depuis l'application (Paramètres > Sauvegarde). -->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="root" />
+        <exclude domain="file" />
+        <exclude domain="database" />
+        <exclude domain="sharedpref" />
+        <exclude domain="external" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="root" />
+        <exclude domain="file" />
+        <exclude domain="database" />
+        <exclude domain="sharedpref" />
+        <exclude domain="external" />
+    </device-transfer>
+</data-extraction-rules>

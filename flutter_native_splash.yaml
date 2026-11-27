@@ -1,0 +1,14 @@
+# dart run flutter_native_splash:create
+flutter_native_splash:
+  android: true
+  ios: false
+  web: false
+  color: "#0B1F3A"
+  color_dark: "#07090D"
+  image: assets/brand/splash_logo.png
+  image_dark: assets/brand/splash_logo.png
+  android_12:
+    color: "#0B1F3A"
+    color_dark: "#07090D"
+    image: assets/brand/splash_logo.png
+    image_dark: assets/brand/splash_logo.png

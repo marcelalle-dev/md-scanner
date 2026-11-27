@@ -1,0 +1,111 @@
+name: Android build
+
+# Construit l'APK à chaque push sur main. L'App Bundle (AAB) n'est construit que
+# si les secrets de signature sont configurés dans le dépôt. Rien n'est publié.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: android-build-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  FLUTTER_VERSION: 3.44.5
+
+jobs:
+  build:
+    name: Build APK and AAB
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      # Les secrets ne sont pas utilisables directement dans `if:` ; on passe par
+      # une variable d'environnement qui indique seulement leur présence.
+      HAS_SIGNING: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install Java
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Set up Gradle cache
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-provider: basic
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Prepare build configuration
+        env:
+          AI_BACKEND_URL: ${{ vars.AI_BACKEND_URL }}
+          PURCHASE_VERIFICATION_URL: ${{ vars.PURCHASE_VERIFICATION_URL }}
+          ADMOB_BANNER_UNIT_ID: ${{ vars.ADMOB_BANNER_UNIT_ID }}
+          ADMOB_INTERSTITIAL_UNIT_ID: ${{ vars.ADMOB_INTERSTITIAL_UNIT_ID }}
+          ADMOB_REWARDED_UNIT_ID: ${{ vars.ADMOB_REWARDED_UNIT_ID }}
+        run: python3 tool/ci/write_dart_defines.py dart_defines.json
+
+      - name: Configure release signing
+        if: env.HAS_SIGNING == 'true'
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: bash tool/ci/configure_signing.sh
+
+      - name: Build release APK
+        env:
+          ADMOB_APP_ID: ${{ vars.ADMOB_APP_ID }}
+        run: flutter build apk --release --dart-define-from-file=dart_defines.json
+
+      - name: Build release App Bundle
+        if: env.HAS_SIGNING == 'true'
+        env:
+          ADMOB_APP_ID: ${{ vars.ADMOB_APP_ID }}
+        run: flutter build appbundle --release --dart-define-from-file=dart_defines.json
+
+      - name: Remove signing material
+        if: always()
+        run: rm -f android/key.properties "$RUNNER_TEMP/upload-keystore.jks"
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v7
+        with:
+          name: md-scanner-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload App Bundle
+        if: env.HAS_SIGNING == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: md-scanner-aab
+          path: build/app/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Report signing mode
+        run: |
+          if [ "$HAS_SIGNING" = "true" ]; then
+            echo "Signed with the upload keystore: APK and AAB built." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No signing secrets configured: APK signed with the debug key (not publishable), AAB skipped." >> "$GITHUB_STEP_SUMMARY"
+          fi
