@@ -6,6 +6,7 @@ import 'package:md_scanner/core/widgets/cards.dart';
 import 'package:md_scanner/features/ocr/l10n/generated/ocr_localizations.dart';
 import 'package:md_scanner/features/pdf_tools/presentation/pdf_tool.dart';
 import 'package:md_scanner/features/qr_scanner/l10n/generated/qr_localizations.dart';
+import 'package:md_scanner/features/security/l10n/generated/security_localizations.dart';
 
 class _ToolEntry {
   const _ToolEntry(this.icon, this.title, this.hint, this.route);
@@ -25,6 +26,7 @@ class ToolsScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final ocr = OcrLocalizations.of(context);
     final qr = QrLocalizations.of(context);
+    final security = SecurityLocalizations.of(context);
 
     final sections = <(String, List<_ToolEntry>)>[
       (
@@ -70,6 +72,17 @@ class ToolsScreen extends StatelessWidget {
             qr.qrHistoryTitle,
             qr.qrHistoryHint,
             AppRoutes.codeHistory,
+          ),
+        ],
+      ),
+      (
+        l10n.toolsSectionSecurity,
+        [
+          _ToolEntry(
+            Icons.shield_outlined,
+            security.vaultTitle,
+            security.vaultHint,
+            AppRoutes.vault,
           ),
         ],
       ),

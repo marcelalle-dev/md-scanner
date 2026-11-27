@@ -86,6 +86,7 @@
   "toolsSectionText": "Texte",
   "toolsSectionCodes": "QR codes et codes-barres",
   "toolsSectionPdf": "PDF",
+  "toolsSectionSecurity": "Sécurité",
   "toolImagesToPdf": "Images vers PDF",
   "toolImagesToPdfHint": "Assembler des photos en un PDF",
   "toolMerge": "Fusionner des PDF",

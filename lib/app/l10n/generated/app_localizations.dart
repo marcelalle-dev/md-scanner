@@ -596,6 +596,12 @@ abstract class AppLocalizations {
   /// **'PDF'**
   String get toolsSectionPdf;
 
+  /// No description provided for @toolsSectionSecurity.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sécurité'**
+  String get toolsSectionSecurity;
+
   /// No description provided for @toolImagesToPdf.
   ///
   /// In fr, this message translates to:

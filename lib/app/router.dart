@@ -16,6 +16,7 @@ import 'package:md_scanner/features/pdf_tools/presentation/tools_screen.dart';
 import 'package:md_scanner/features/qr_scanner/presentation/code_generator_screen.dart';
 import 'package:md_scanner/features/qr_scanner/presentation/code_history_screen.dart';
 import 'package:md_scanner/features/qr_scanner/presentation/code_scanner_screen.dart';
+import 'package:md_scanner/features/security/presentation/vault_screen.dart';
 import 'package:md_scanner/features/settings/presentation/profile_screen.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -68,6 +69,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.barcodeGenerator,
         builder: (context, state) => const CodeGeneratorScreen(qrMode: false),
+      ),
+      GoRoute(
+        path: AppRoutes.vault,
+        builder: (context, state) => const VaultScreen(),
       ),
       GoRoute(
         path: AppRoutes.trash,

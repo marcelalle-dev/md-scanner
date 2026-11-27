@@ -274,6 +274,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get toolsSectionPdf => 'PDF';
 
   @override
+  String get toolsSectionSecurity => 'Security';
+
+  @override
   String get toolImagesToPdf => 'Images to PDF';
 
   @override

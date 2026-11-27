@@ -83,6 +83,7 @@
   "toolsSectionText": "Text",
   "toolsSectionCodes": "QR codes and barcodes",
   "toolsSectionPdf": "PDF",
+  "toolsSectionSecurity": "Security",
   "toolImagesToPdf": "Images to PDF",
   "toolImagesToPdfHint": "Combine photos into one PDF",
   "toolMerge": "Merge PDFs",
