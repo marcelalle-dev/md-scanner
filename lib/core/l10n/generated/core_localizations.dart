@@ -272,6 +272,18 @@ abstract class CoreLocalizations {
   /// **'Passer à Premium'**
   String get actionUnlockPremium;
 
+  /// No description provided for @actionShowPassword.
+  ///
+  /// In fr, this message translates to:
+  /// **'Afficher le mot de passe'**
+  String get actionShowPassword;
+
+  /// No description provided for @actionHidePassword.
+  ///
+  /// In fr, this message translates to:
+  /// **'Masquer le mot de passe'**
+  String get actionHidePassword;
+
   /// No description provided for @labelLoading.
   ///
   /// In fr, this message translates to:

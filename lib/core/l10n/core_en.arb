@@ -29,6 +29,8 @@
   "actionSelectAll": "Select all",
   "actionOpenSettings": "Open settings",
   "actionUnlockPremium": "Go Premium",
+  "actionShowPassword": "Show password",
+  "actionHidePassword": "Hide password",
   "labelLoading": "Loading…",
   "labelProcessing": "Processing…",
   "labelPremium": "Premium",

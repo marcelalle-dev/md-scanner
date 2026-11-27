@@ -29,6 +29,8 @@
   "actionSelectAll": "Tout sélectionner",
   "actionOpenSettings": "Ouvrir les réglages",
   "actionUnlockPremium": "Passer à Premium",
+  "actionShowPassword": "Afficher le mot de passe",
+  "actionHidePassword": "Masquer le mot de passe",
   "labelLoading": "Chargement…",
   "labelProcessing": "Traitement en cours…",
   "labelPremium": "Premium",

@@ -96,6 +96,12 @@ class CoreLocalizationsFr extends CoreLocalizations {
   String get actionUnlockPremium => 'Passer à Premium';
 
   @override
+  String get actionShowPassword => 'Afficher le mot de passe';
+
+  @override
+  String get actionHidePassword => 'Masquer le mot de passe';
+
+  @override
   String get labelLoading => 'Chargement…';
 
   @override

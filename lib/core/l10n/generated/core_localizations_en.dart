@@ -96,6 +96,12 @@ class CoreLocalizationsEn extends CoreLocalizations {
   String get actionUnlockPremium => 'Go Premium';
 
   @override
+  String get actionShowPassword => 'Show password';
+
+  @override
+  String get actionHidePassword => 'Hide password';
+
+  @override
   String get labelLoading => 'Loading…';
 
   @override
