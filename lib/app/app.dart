@@ -5,6 +5,7 @@ import 'package:md_scanner/app/l10n/generated/app_localizations.dart';
 import 'package:md_scanner/app/router.dart';
 import 'package:md_scanner/app/theme/app_theme.dart';
 import 'package:md_scanner/core/l10n/generated/core_localizations.dart';
+import 'package:md_scanner/features/ai_assistant/l10n/generated/ai_localizations.dart';
 import 'package:md_scanner/features/ocr/l10n/generated/ocr_localizations.dart';
 import 'package:md_scanner/features/premium/l10n/generated/premium_localizations.dart';
 import 'package:md_scanner/features/qr_scanner/l10n/generated/qr_localizations.dart';
@@ -14,6 +15,7 @@ import 'package:md_scanner/shared/providers/app_settings.dart';
 /// Delegates of every localized module, shared with the widget tests.
 const List<LocalizationsDelegate<Object?>> appLocalizationsDelegates = [
   AppLocalizations.delegate,
+  AiLocalizations.delegate,
   CoreLocalizations.delegate,
   OcrLocalizations.delegate,
   PremiumLocalizations.delegate,

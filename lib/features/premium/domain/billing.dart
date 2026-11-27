@@ -102,6 +102,15 @@ abstract interface class BillingGateway {
   Stream<List<StorePurchase>> get purchaseUpdates;
 }
 
+/// The purchase currently backing Premium. Kept in memory only, to authorize
+/// calls to the backend; the token is never written to disk.
+class ActivePurchase {
+  const ActivePurchase({required this.productId, required this.token});
+
+  final String productId;
+  final String token;
+}
+
 class VerifiedPurchase {
   const VerifiedPurchase({
     required this.source,
@@ -177,6 +186,11 @@ class BillingService {
 
   Stream<Result<void>> get purchaseOutcomes => _outcomes.stream;
 
+  ActivePurchase? _activePurchase;
+
+  /// Null while the user is not Premium (or Premium is only an offline grace).
+  ActivePurchase? get activePurchase => _activePurchase;
+
   /// Starts listening to the store and checks the current entitlement.
   Future<void> start() async {
     _subscription ??= _gateway.purchaseUpdates.listen(_onPurchases);
@@ -226,6 +240,7 @@ class BillingService {
     }
     // Google Play answered and confirmed nothing: Premium is revoked.
     await _db.delete(_table);
+    _activePurchase = null;
     _onEntitlement(const Entitlement.free());
     return const Success(null);
   }
@@ -280,6 +295,10 @@ class BillingService {
       'expiration_date': verified.expiresAt?.toUtc().millisecondsSinceEpoch,
       'last_verified_at': _clock().toUtc().millisecondsSinceEpoch,
     }, conflictAlgorithm: ConflictAlgorithm.replace);
+    _activePurchase = ActivePurchase(
+      productId: purchase.productId,
+      token: purchase.token,
+    );
     _onEntitlement(
       Entitlement(
         isPremium: true,

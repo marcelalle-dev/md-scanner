@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:md_scanner/app/routes.dart';
 import 'package:md_scanner/app/shell/app_shell.dart';
+import 'package:md_scanner/features/ai_assistant/presentation/ai_assistant_screen.dart';
 import 'package:md_scanner/features/document_scanner/presentation/scan_review_screen.dart';
 import 'package:md_scanner/features/document_scanner/presentation/scanner_screen.dart';
 import 'package:md_scanner/features/document_vault/presentation/document_details_screen.dart';
@@ -70,6 +71,12 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.barcodeGenerator,
         builder: (context, state) => const CodeGeneratorScreen(qrMode: false),
+      ),
+      GoRoute(
+        path: AppRoutes.aiAssistant,
+        builder: (context, state) => AiAssistantScreen(
+          documentId: state.uri.queryParameters[AppRoutes.documentIdParam],
+        ),
       ),
       GoRoute(
         path: AppRoutes.premium,
