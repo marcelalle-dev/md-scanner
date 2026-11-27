@@ -149,7 +149,7 @@ abstract class AppLocalizations {
   /// No description provided for @homePdfTools.
   ///
   /// In fr, this message translates to:
-  /// **'Outils PDF'**
+  /// **'Outils'**
   String get homePdfTools;
 
   /// No description provided for @homeRecent.
@@ -575,8 +575,26 @@ abstract class AppLocalizations {
   /// No description provided for @toolsTitle.
   ///
   /// In fr, this message translates to:
-  /// **'Outils PDF'**
+  /// **'Outils'**
   String get toolsTitle;
+
+  /// No description provided for @toolsSectionText.
+  ///
+  /// In fr, this message translates to:
+  /// **'Texte'**
+  String get toolsSectionText;
+
+  /// No description provided for @toolsSectionCodes.
+  ///
+  /// In fr, this message translates to:
+  /// **'QR codes et codes-barres'**
+  String get toolsSectionCodes;
+
+  /// No description provided for @toolsSectionPdf.
+  ///
+  /// In fr, this message translates to:
+  /// **'PDF'**
+  String get toolsSectionPdf;
 
   /// No description provided for @toolImagesToPdf.
   ///

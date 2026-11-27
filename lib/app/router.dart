@@ -9,9 +9,13 @@ import 'package:md_scanner/features/document_vault/presentation/document_details
 import 'package:md_scanner/features/document_vault/presentation/documents_screen.dart';
 import 'package:md_scanner/features/document_vault/presentation/trash_screen.dart';
 import 'package:md_scanner/features/home/presentation/home_screen.dart';
+import 'package:md_scanner/features/ocr/presentation/ocr_screen.dart';
 import 'package:md_scanner/features/pdf_tools/presentation/pdf_tool.dart';
 import 'package:md_scanner/features/pdf_tools/presentation/pdf_tool_screen.dart';
 import 'package:md_scanner/features/pdf_tools/presentation/tools_screen.dart';
+import 'package:md_scanner/features/qr_scanner/presentation/code_generator_screen.dart';
+import 'package:md_scanner/features/qr_scanner/presentation/code_history_screen.dart';
+import 'package:md_scanner/features/qr_scanner/presentation/code_scanner_screen.dart';
 import 'package:md_scanner/features/settings/presentation/profile_screen.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -38,6 +42,32 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => DocumentDetailsScreen(
           documentId: state.pathParameters['documentId']!,
         ),
+      ),
+      GoRoute(
+        path: AppRoutes.ocr,
+        builder: (context, state) => OcrScreen(
+          documentId: state.uri.queryParameters[AppRoutes.documentIdParam],
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.qrScanner,
+        builder: (context, state) => const CodeScannerScreen(linear: false),
+      ),
+      GoRoute(
+        path: AppRoutes.barcodeScanner,
+        builder: (context, state) => const CodeScannerScreen(linear: true),
+      ),
+      GoRoute(
+        path: AppRoutes.codeHistory,
+        builder: (context, state) => const CodeHistoryScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.qrGenerator,
+        builder: (context, state) => const CodeGeneratorScreen(qrMode: true),
+      ),
+      GoRoute(
+        path: AppRoutes.barcodeGenerator,
+        builder: (context, state) => const CodeGeneratorScreen(qrMode: false),
       ),
       GoRoute(
         path: AppRoutes.trash,

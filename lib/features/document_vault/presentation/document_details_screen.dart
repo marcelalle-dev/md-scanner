@@ -4,17 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:md_scanner/app/l10n/generated/app_localizations.dart';
+import 'package:md_scanner/app/routes.dart';
 import 'package:md_scanner/app/theme/app_tokens.dart';
 import 'package:md_scanner/core/storage/file_storage.dart';
 import 'package:md_scanner/core/utils/formatters.dart';
 import 'package:md_scanner/core/widgets/feedback.dart';
 import 'package:md_scanner/core/widgets/state_views.dart';
 import 'package:md_scanner/features/document_vault/presentation/document_actions.dart';
+import 'package:md_scanner/features/ocr/domain/ocr_service.dart';
+import 'package:md_scanner/features/ocr/l10n/generated/ocr_localizations.dart';
 import 'package:md_scanner/shared/models/document_entity.dart';
 import 'package:md_scanner/shared/providers/document_providers.dart';
 import 'package:pdfrx/pdfrx.dart';
 
-enum _Menu { rename, trash }
+enum _Menu { ocr, rename, trash }
 
 /// Preview of one document with its actions.
 class DocumentDetailsScreen extends ConsumerWidget {
@@ -57,6 +60,10 @@ class DocumentDetailsScreen extends ConsumerWidget {
                   tooltip: core.actionMore,
                   onSelected: (choice) async {
                     switch (choice) {
+                      case _Menu.ocr:
+                        await context.push(
+                          AppRoutes.withDocument(AppRoutes.ocr, document.id),
+                        );
                       case _Menu.rename:
                         await renameDocument(context, ref, document);
                       case _Menu.trash:
@@ -69,6 +76,13 @@ class DocumentDetailsScreen extends ConsumerWidget {
                     }
                   },
                   itemBuilder: (context) => [
+                    if (OcrService.supports(document))
+                      PopupMenuItem(
+                        value: _Menu.ocr,
+                        child: Text(
+                          OcrLocalizations.of(context).ocrExtractText,
+                        ),
+                      ),
                     PopupMenuItem(
                       value: _Menu.rename,
                       child: Text(l10n.documentRename),

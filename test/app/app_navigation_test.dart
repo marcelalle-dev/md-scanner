@@ -90,7 +90,8 @@ void main() {
     expect(find.text('Reçu'), findsOneWidget);
 
     await open('Outils');
-    expect(find.text('Fusionner des PDF'), findsOneWidget);
+    expect(find.text('Reconnaissance de texte'), findsOneWidget);
+    expect(find.text('Scanner un QR code'), findsOneWidget);
     expect(find.byType(ListTile), findsAtLeastNWidgets(5));
 
     await open('Documents');

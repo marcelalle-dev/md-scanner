@@ -1,0 +1,23 @@
+{
+  "@@locale": "en",
+  "ocrTitle": "Text recognition",
+  "ocrToolHint": "Extract the text of an image or a PDF",
+  "ocrChooseDocument": "Choose a document",
+  "ocrImportImage": "Import an image",
+  "ocrNoDocument": "No compatible document",
+  "ocrNoDocumentHint": "Scan a document or import an image to extract its text.",
+  "ocrStart": "Extract text",
+  "ocrRestart": "Run recognition again",
+  "ocrRunning": "Recognizing text…",
+  "ocrIntro": "Recognition runs on the device, offline, for Latin-script text (French, English…).",
+  "ocrTextLabel": "Extracted text — you can correct it",
+  "ocrSearch": "Search in the text",
+  "ocrMatches": "{count, plural, =0{No match} =1{1 match} other{{count} matches}}",
+  "ocrNextMatch": "Next match",
+  "ocrSave": "Save text",
+  "ocrSaved": "Text saved with the document",
+  "ocrExportTxt": "Export as TXT",
+  "ocrExportDocx": "Export as DOCX",
+  "ocrExported": "File created in your documents",
+  "ocrExtractText": "Extract text"
+}

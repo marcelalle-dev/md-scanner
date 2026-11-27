@@ -5,7 +5,18 @@ import 'package:md_scanner/app/l10n/generated/app_localizations.dart';
 import 'package:md_scanner/app/router.dart';
 import 'package:md_scanner/app/theme/app_theme.dart';
 import 'package:md_scanner/core/l10n/generated/core_localizations.dart';
+import 'package:md_scanner/features/ocr/l10n/generated/ocr_localizations.dart';
+import 'package:md_scanner/features/qr_scanner/l10n/generated/qr_localizations.dart';
 import 'package:md_scanner/shared/providers/app_settings.dart';
+
+/// Delegates of every localized module, shared with the widget tests.
+const List<LocalizationsDelegate<Object?>> appLocalizationsDelegates = [
+  AppLocalizations.delegate,
+  CoreLocalizations.delegate,
+  OcrLocalizations.delegate,
+  QrLocalizations.delegate,
+  ...GlobalMaterialLocalizations.delegates,
+];
 
 class MdScannerApp extends ConsumerWidget {
   const MdScannerApp({super.key});
@@ -22,11 +33,7 @@ class MdScannerApp extends ConsumerWidget {
       themeMode: settings.themeMode,
       locale: settings.locale,
       supportedLocales: AppSettings.supportedLocales,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        CoreLocalizations.delegate,
-        ...GlobalMaterialLocalizations.delegates,
-      ],
+      localizationsDelegates: appLocalizationsDelegates,
     );
   }
 }

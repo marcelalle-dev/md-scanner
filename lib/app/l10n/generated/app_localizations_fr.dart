@@ -33,7 +33,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homeImport => 'Importer';
 
   @override
-  String get homePdfTools => 'Outils PDF';
+  String get homePdfTools => 'Outils';
 
   @override
   String get homeRecent => 'Documents récents';
@@ -263,7 +263,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get trashConfirmMessage => 'Cette action est irréversible.';
 
   @override
-  String get toolsTitle => 'Outils PDF';
+  String get toolsTitle => 'Outils';
+
+  @override
+  String get toolsSectionText => 'Texte';
+
+  @override
+  String get toolsSectionCodes => 'QR codes et codes-barres';
+
+  @override
+  String get toolsSectionPdf => 'PDF';
 
   @override
   String get toolImagesToPdf => 'Images vers PDF';

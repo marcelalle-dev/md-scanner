@@ -13,6 +13,8 @@ import 'package:md_scanner/features/document_scanner/data/plugin_document_captur
 import 'package:md_scanner/features/document_scanner/domain/document_capture.dart';
 import 'package:md_scanner/features/image_editor/data/isolate_image_processor.dart';
 import 'package:md_scanner/features/image_editor/domain/image_processor.dart';
+import 'package:md_scanner/features/ocr/data/mlkit_text_recognition.dart';
+import 'package:md_scanner/features/ocr/domain/text_recognition.dart';
 import 'package:md_scanner/features/pdf_tools/data/pdf_engine_providers.dart';
 import 'package:md_scanner/shared/providers/app_settings.dart';
 import 'package:md_scanner/shared/providers/document_providers.dart';
@@ -50,6 +52,11 @@ Future<void> bootstrap() async {
         (ref) => IsolateImageProcessor(logger: ref.watch(appLoggerProvider)),
       ),
       documentCaptureProvider.overrideWith((ref) => PluginDocumentCapture()),
+      textRecognitionServiceProvider.overrideWith((ref) {
+        final service = MlKitTextRecognitionService();
+        ref.onDispose(service.dispose);
+        return service;
+      }),
       pdfEngineOverride(),
     ],
   );
