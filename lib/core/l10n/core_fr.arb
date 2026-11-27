@@ -1,0 +1,151 @@
+{
+  "@@locale": "fr",
+  "appName": "MD SCANNER",
+  "actionOk": "OK",
+  "actionCancel": "Annuler",
+  "actionSave": "Enregistrer",
+  "actionDelete": "Supprimer",
+  "actionShare": "Partager",
+  "actionRetry": "Réessayer",
+  "actionClose": "Fermer",
+  "actionContinue": "Continuer",
+  "actionBack": "Retour",
+  "actionDone": "Terminer",
+  "actionEdit": "Modifier",
+  "actionRename": "Renommer",
+  "actionCopy": "Copier",
+  "actionExport": "Exporter",
+  "actionImport": "Importer",
+  "actionOpen": "Ouvrir",
+  "actionSearch": "Rechercher",
+  "actionConfirm": "Confirmer",
+  "actionAdd": "Ajouter",
+  "actionNext": "Suivant",
+  "actionSkip": "Passer",
+  "actionYes": "Oui",
+  "actionNo": "Non",
+  "actionPrint": "Imprimer",
+  "actionMore": "Plus d'options",
+  "actionSelectAll": "Tout sélectionner",
+  "actionOpenSettings": "Ouvrir les réglages",
+  "actionUnlockPremium": "Passer à Premium",
+  "labelLoading": "Chargement…",
+  "labelProcessing": "Traitement en cours…",
+  "labelPremium": "Premium",
+  "labelOffline": "Hors connexion",
+  "copiedToClipboard": "Copié dans le presse-papiers",
+  "savedToLibrary": "Enregistré dans vos documents",
+  "premiumRequiredTitle": "Fonction Premium",
+  "premiumRequiredMessage": "Cette fonction est réservée aux abonnés Premium.",
+  "pageCount": "{count, plural, =0{Aucune page} =1{1 page} other{{count} pages}}",
+  "@pageCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "fileSizeBytes": "{value} o",
+  "@fileSizeBytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "fileSizeKilobytes": "{value} Ko",
+  "@fileSizeKilobytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "fileSizeMegabytes": "{value} Mo",
+  "@fileSizeMegabytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "fileSizeGigabytes": "{value} Go",
+  "@fileSizeGigabytes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "errorStorageNotFound": "Fichier introuvable. Il a peut-être été déplacé ou supprimé.",
+  "errorStorageInsufficientSpace": "Espace de stockage insuffisant. Libérez de l'espace puis réessayez.",
+  "errorStorageRead": "Impossible de lire ce fichier.",
+  "errorStorageWrite": "Impossible d'enregistrer le fichier.",
+  "errorStorageCorrupted": "Ce fichier est endommagé et ne peut pas être ouvert.",
+  "errorStorageAlreadyExists": "Un élément portant ce nom existe déjà.",
+  "errorPermissionCamera": "L'accès à l'appareil photo est nécessaire pour numériser.",
+  "errorPermissionCameraPermanent": "L'accès à l'appareil photo est désactivé. Activez-le dans les réglages de l'application.",
+  "errorPermissionPhotos": "L'accès aux photos a été refusé.",
+  "errorPermissionBiometrics": "L'authentification biométrique n'est pas autorisée.",
+  "errorPermissionNotifications": "Les notifications sont désactivées.",
+  "errorCameraUnavailable": "Aucun appareil photo disponible sur cet appareil.",
+  "errorCameraInit": "Impossible de démarrer l'appareil photo.",
+  "errorCameraCapture": "La capture a échoué. Réessayez.",
+  "errorImageDecode": "Cette image est illisible ou endommagée.",
+  "errorImageUnsupported": "Ce format d'image n'est pas pris en charge.",
+  "errorImageTooLarge": "Cette image est trop volumineuse pour être traitée.",
+  "errorImageProcessing": "Le traitement de l'image a échoué.",
+  "errorPdfPasswordRequired": "Ce PDF est protégé par mot de passe.",
+  "errorPdfWrongPassword": "Mot de passe incorrect.",
+  "errorPdfCorrupted": "Ce PDF est endommagé et ne peut pas être ouvert.",
+  "errorPdfUnsupported": "Ce PDF utilise une fonctionnalité non prise en charge.",
+  "errorPdfEmpty": "Ce document ne contient aucune page.",
+  "errorPdfInvalidRange": "La sélection de pages n'est pas valide.",
+  "errorPdfEngineUnavailable": "Le moteur PDF n'est pas disponible sur cet appareil.",
+  "errorPdfOperationFailed": "L'opération sur le PDF a échoué.",
+  "errorOcrNoText": "Aucun texte n'a été détecté.",
+  "errorOcrEngineUnavailable": "La reconnaissance de texte n'est pas disponible sur cet appareil.",
+  "errorOcrModelUnavailable": "Le modèle de reconnaissance n'est pas encore disponible. Connectez-vous à Internet une première fois puis réessayez.",
+  "errorOcrFailed": "La reconnaissance de texte a échoué.",
+  "errorScanUnavailable": "Le scanner n'est pas disponible sur cet appareil.",
+  "errorScanNoDocument": "Aucun document détecté.",
+  "errorScanSessionNotFound": "Cette session de numérisation n'existe plus.",
+  "errorScanFailed": "La numérisation a échoué.",
+  "errorSecurityWrongPin": "Code PIN incorrect.",
+  "errorSecurityLockedOut": "Trop de tentatives. Réessayez dans {seconds} s.",
+  "@errorSecurityLockedOut": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "errorSecurityPinNotSet": "Aucun code PIN n'est défini.",
+  "errorSecurityBiometricUnavailable": "La biométrie n'est pas disponible sur cet appareil.",
+  "errorSecurityBiometricNotEnrolled": "Aucune empreinte ni visage n'est enregistré sur cet appareil.",
+  "errorSecurityBiometricFailed": "L'authentification biométrique a échoué.",
+  "errorSecurityKeyUnavailable": "La clé de chiffrement est indisponible. Le coffre-fort ne peut pas être ouvert.",
+  "errorSecurityDecryption": "Impossible de déchiffrer ce fichier.",
+  "errorSecurityEncryption": "Impossible de chiffrer ce fichier.",
+  "errorNetworkOffline": "Pas de connexion Internet.",
+  "errorNetworkTimeout": "Le serveur met trop de temps à répondre.",
+  "errorNetworkServer": "Le service est momentanément indisponible.",
+  "errorNetworkUnauthorized": "Accès refusé par le service.",
+  "errorNetworkQuota": "Votre quota est atteint pour cette période.",
+  "errorNetworkRateLimited": "Trop de requêtes. Patientez un instant.",
+  "errorNetworkNotConfigured": "Ce service n'est pas configuré.",
+  "errorNetworkInvalidResponse": "Réponse inattendue du service.",
+  "errorBillingStoreUnavailable": "Google Play n'est pas disponible. Vérifiez votre connexion et votre compte.",
+  "errorBillingProductNotFound": "Cette offre n'est pas disponible pour le moment.",
+  "errorBillingPending": "Votre achat est en attente de validation.",
+  "errorBillingAlreadyOwned": "Vous possédez déjà cette offre.",
+  "errorBillingVerificationFailed": "L'achat n'a pas pu être vérifié.",
+  "errorBillingPurchaseFailed": "L'achat n'a pas abouti.",
+  "errorAdNotConfigured": "Les publicités ne sont pas configurées.",
+  "errorAdLoadFailed": "Aucune publicité disponible pour le moment.",
+  "errorAdShowFailed": "La publicité n'a pas pu être affichée.",
+  "errorAdConsentRequired": "Votre choix de confidentialité est requis.",
+  "errorValidation": "La valeur saisie n'est pas valide.",
+  "errorCancelled": "Opération annulée.",
+  "errorUnexpected": "Une erreur inattendue s'est produite."
+}
