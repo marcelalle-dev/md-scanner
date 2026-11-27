@@ -1,6 +1,6 @@
 # API du backend
 
-> **État : non livré.** L'application actuelle ne contacte aucun backend. Une ébauche de serveur a été commencée dans `backend/` mais n'a été ni terminée ni relue : elle n'est pas versionnée et ne doit pas être déployée en l'état.
+> **État : client livré, serveur non livré.** L'application contient le client (assistant IA et vérification des achats) et s'en passe proprement tant qu'aucune URL n'est configurée. Le serveur dans `backend/` est une ébauche Cloudflare Workers inachevée — sa vérification de types échoue encore — non versionnée, à ne pas déployer en l'état.
 
 Ce document fixe l'architecture et le contrat visés, pour que l'implémentation reste cohérente.
 
@@ -50,6 +50,12 @@ Réponse :
 Le serveur refuse tout autre nom de package et tout identifiant de produit inconnu.
 
 ### `POST /v1/ai/tasks`
+
+En-têtes : `X-Install-Id` (UUID aléatoire de l'installation), `Authorization: Bearer <jeton d'achat>` et `X-Product-Id`.
+
+Corps : `{ "task", "outputLanguage", "documentText", "question"?, "targetLanguage"? }` avec `task` parmi `summary`, `section_summary`, `qa`, `extract`, `translate`, `flashcards`, `admin_analysis`.
+
+Réponse : `{ "result": { … }, "quota": { "remaining": n } }`. L'application affiche `result` quelle que soit sa structure.
 
 L'application n'envoie que du **texte** extrait localement, jamais de fichier, et seulement après consentement explicite de l'utilisateur.
 

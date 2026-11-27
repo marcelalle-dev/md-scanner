@@ -7,9 +7,9 @@
 | Gratuit | Premium |
 | --- | --- |
 | Numérisation, export PDF et JPG | Suppression des publicités |
-| Outils PDF essentiels | Outils PDF avancés, traitement par lots |
-| Bibliothèque locale, hors connexion | OCR avancé, export DOCX |
-| Publicités non intrusives | Assistant IA, fonctions avancées du coffre-fort |
+| OCR, export TXT | Export DOCX |
+| QR codes et codes-barres | Couleurs personnalisées des QR codes |
+| Outils PDF, bibliothèque, coffre-fort | Assistant IA |
 
 Les fonctions essentielles de numérisation ne sont jamais bloquées.
 
