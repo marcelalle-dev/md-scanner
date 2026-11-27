@@ -1,5 +1,7 @@
 # Publication sur Google Play
 
+> **Avant de publier**, consultez l'état d'avancement du [README](../README.md) : les achats Premium, les publicités, l'OCR, les QR codes et le coffre-fort ne sont pas encore développés. Les sections ci-dessous qui les concernent décrivent la marche à suivre une fois ces modules livrés.
+
 Ce guide décrit tout ce qu'il reste à faire **manuellement** pour publier MD SCANNER. Rien de ce qui suit n'a été exécuté automatiquement : aucun compte n'a été créé, aucun identifiant n'a été inventé, l'application n'est pas publiée.
 
 | Élément | Valeur |
@@ -106,7 +108,7 @@ Avec les secrets de signature configurés dans GitHub, le workflow `release.yml`
 >
 > Gratuit avec publicités discrètes. L'offre Premium supprime les publicités et débloque les fonctions avancées.
 
-Adaptez ce texte : il ne doit annoncer que ce que la version publiée fait réellement.
+**Ce texte décrit le produit complet.** Retirez les lignes OCR, QR codes, coffre-fort et Premium tant que ces fonctions ne sont pas livrées : la fiche ne doit annoncer que ce que la version publiée fait réellement.
 
 ## 7. Déclarations obligatoires
 
@@ -121,7 +123,7 @@ Adaptez ce texte : il ne doit annoncer que ce que la version publiée fait réel
 | Documents, photos, texte extrait | **Non** : traités et stockés sur l'appareil | Non | — |
 | Texte envoyé à l'assistant IA | Seulement si l'utilisateur y consent, pour la requête en cours | Avec votre backend et le fournisseur d'IA ; non conservé | Fonctionnalité de l'application |
 
-Cochez « les données sont chiffrées en transit » et indiquez comment l'utilisateur supprime ses données (dans l'application : *Profil → Confidentialité → Effacer mes données*).
+Cochez « les données sont chiffrées en transit » et indiquez comment l'utilisateur supprime ses données (corbeille de l'application, puis désinstallation ou effacement des données dans les réglages d'Android).
 
 ### Autres déclarations
 
