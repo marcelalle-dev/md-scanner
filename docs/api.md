@@ -1,6 +1,6 @@
 # API du backend
 
-> **État : client livré, serveur non livré.** L'application contient le client (assistant IA et vérification des achats) et s'en passe proprement tant qu'aucune URL n'est configurée. Le serveur dans `backend/` est une ébauche Cloudflare Workers inachevée — sa vérification de types échoue encore — non versionnée, à ne pas déployer en l'état.
+> **État : écrit et testé, jamais déployé.** Le backend (`backend/`, Cloudflare Workers) passe la vérification de types et ses 93 tests avec des doublures des API d'Anthropic et de Google. Il n'a jamais été déployé ni appelé avec de vraies clés. Tant qu'aucune URL n'est fournie au build, l'application s'en passe : l'assistant IA s'affiche comme indisponible et les achats sont vérifiés sur l'appareil. Déploiement : [backend/README.md](../backend/README.md).
 
 Ce document fixe l'architecture et le contrat visés, pour que l'implémentation reste cohérente.
 

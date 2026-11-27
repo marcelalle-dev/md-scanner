@@ -1,0 +1,15 @@
+# Local development secrets for `wrangler dev`.
+#
+# 1. Copy this file to `.dev.vars` (git-ignored) and fill in real values.
+# 2. NEVER commit `.dev.vars`. In production, secrets are set with
+#    `npx wrangler secret put <NAME>` and never appear in wrangler.jsonc.
+#
+# Both values below are placeholders and do not work.
+
+# Anthropic API key (https://platform.claude.com/ -> API keys).
+ANTHROPIC_API_KEY=sk-ant-REPLACE_ME
+
+# Full content of the Google Cloud service-account key file (JSON), on ONE line,
+# wrapped in single quotes. Keep the literal "\n" sequences inside private_key.
+# A base64-encoded copy of the JSON file is accepted too.
+GOOGLE_SERVICE_ACCOUNT_JSON='{"type":"service_account","project_id":"REPLACE_ME","private_key_id":"REPLACE_ME","private_key":"-----BEGIN PRIVATE KEY-----\nREPLACE_ME\n-----END PRIVATE KEY-----\n","client_email":"REPLACE_ME@REPLACE_ME.iam.gserviceaccount.com","token_uri":"https://oauth2.googleapis.com/token"}'

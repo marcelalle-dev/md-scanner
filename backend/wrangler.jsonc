@@ -1,0 +1,78 @@
+// Cloudflare Workers configuration for the MD SCANNER backend.
+//
+// This file contains NO secret. Secrets are provisioned with:
+//   npx wrangler secret put ANTHROPIC_API_KEY
+//   npx wrangler secret put GOOGLE_SERVICE_ACCOUNT_JSON
+// and, for local development only, in the git-ignored `.dev.vars` file
+// (see `.dev.vars.example`).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "md-scanner-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-01",
+
+  // workers.dev URL is enough for a native mobile client; add a custom domain
+  // route here later if needed.
+  "workers_dev": true,
+  "preview_urls": false,
+
+  // Counters, quotas, budgets and the short-lived entitlement cache live in a
+  // single SQLite-backed Durable Object (the only Durable Object storage
+  // backend available on the Workers Free plan).
+  "durable_objects": {
+    "bindings": [{ "name": "LIMITER", "class_name": "LimiterDO" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["LimiterDO"] }],
+
+  // Workers Logs: only the allow-listed structured lines written by the code
+  // are stored. Invocation logs (request URL / headers captured by the
+  // platform) are disabled on purpose to minimise personal data.
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1,
+    "logs": { "invocation_logs": false }
+  },
+
+  // Non-secret configuration. Every value is optional: the code falls back to
+  // the same safe defaults. All values are strings.
+  "vars": {
+    // --- AI provider -------------------------------------------------------
+    "ANTHROPIC_MODEL": "claude-opus-5-5",
+    "ANTHROPIC_EFFORT": "low",
+    "ANTHROPIC_REFUSAL_FALLBACK": "default",
+    "ANTHROPIC_MAX_RETRIES": "1",
+    "UPSTREAM_TIMEOUT_MS": "60000",
+
+    // --- Access and quotas -------------------------------------------------
+    "DAILY_REQUEST_LIMIT": "30",
+    "FREE_DAILY_REQUESTS": "0",
+    "FREE_GLOBAL_DAILY_REQUESTS": "200",
+    "MONTHLY_TOKEN_BUDGET": "600000",
+    "GLOBAL_DAILY_TOKEN_BUDGET": "1000000",
+
+    // --- Burst rate limits (per client IP) ---------------------------------
+    "RATE_LIMIT_WINDOW_SECONDS": "60",
+    "RATE_LIMIT_AI_MAX": "10",
+    "RATE_LIMIT_VERIFY_MAX": "20",
+
+    // --- Input and output size limits --------------------------------------
+    "MAX_BODY_BYTES": "262144",
+    "MAX_DOCUMENT_CHARS": "60000",
+    "MAX_TRANSLATE_CHARS": "12000",
+    "MAX_QUESTION_CHARS": "500",
+    "MAX_OUTPUT_TOKENS_SUMMARY": "2000",
+    "MAX_OUTPUT_TOKENS_SECTION_SUMMARY": "4000",
+    "MAX_OUTPUT_TOKENS_QA": "1500",
+    "MAX_OUTPUT_TOKENS_EXTRACT": "4000",
+    "MAX_OUTPUT_TOKENS_TRANSLATE": "8000",
+    "MAX_OUTPUT_TOKENS_FLASHCARDS": "3000",
+    "MAX_OUTPUT_TOKENS_ADMIN_ANALYSIS": "3000",
+
+    // --- Google Play -------------------------------------------------------
+    "GOOGLE_TIMEOUT_MS": "10000",
+    "ENTITLEMENT_CACHE_SECONDS": "600",
+    "ENTITLEMENT_NEGATIVE_CACHE_SECONDS": "60",
+    "PLAY_INTEGRITY_MODE": "off",
+    "PLAY_INTEGRITY_MAX_AGE_SECONDS": "120"
+  }
+}

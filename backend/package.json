@@ -1,0 +1,32 @@
+{
+  "name": "md-scanner-backend",
+  "version": "1.0.0",
+  "description": "Secure backend for MD SCANNER: AI document assistant proxy and Google Play purchase verification on Cloudflare Workers.",
+  "private": true,
+  "type": "module",
+  "license": "UNLICENSED",
+  "author": "MarcelAlle.Dev",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "build": "wrangler deploy --dry-run --outdir dist",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "npm run typecheck && npm test"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.14.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261127.1",
+    "@types/node": "^24.0.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.2",
+    "wrangler": "^4.168.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

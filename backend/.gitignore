@@ -1,0 +1,27 @@
+# Dependencies and build output
+node_modules/
+dist/
+coverage/
+
+# Wrangler local state (local Durable Object storage, caches, logs)
+.wrangler/
+
+# Secrets: never commit. Only the *.example files are versioned.
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+.env
+.env.*
+!.env.example
+
+# Service-account key files must never live in the repo
+*service-account*.json
+*-sa.json
+*.pem
+*.p12
+*.key
+
+# Tooling noise
+*.log
+*.tsbuildinfo
+.DS_Store
