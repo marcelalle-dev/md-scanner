@@ -9,6 +9,7 @@ import 'package:md_scanner/core/services/app_logger.dart';
 import 'package:md_scanner/core/storage/database/app_database.dart';
 import 'package:md_scanner/core/storage/file_storage.dart';
 import 'package:md_scanner/core/storage/settings_store.dart';
+import 'package:md_scanner/features/ads/data/ads_service.dart';
 import 'package:md_scanner/features/document_scanner/data/plugin_document_capture.dart';
 import 'package:md_scanner/features/document_scanner/domain/document_capture.dart';
 import 'package:md_scanner/features/image_editor/data/isolate_image_processor.dart';
@@ -16,6 +17,8 @@ import 'package:md_scanner/features/image_editor/domain/image_processor.dart';
 import 'package:md_scanner/features/ocr/data/mlkit_text_recognition.dart';
 import 'package:md_scanner/features/ocr/domain/text_recognition.dart';
 import 'package:md_scanner/features/pdf_tools/data/pdf_engine_providers.dart';
+import 'package:md_scanner/features/premium/data/play_billing_gateway.dart';
+import 'package:md_scanner/features/premium/domain/billing.dart';
 import 'package:md_scanner/shared/providers/app_settings.dart';
 import 'package:md_scanner/shared/providers/document_providers.dart';
 import 'package:md_scanner/shared/repositories/document_repository.dart';
@@ -57,12 +60,22 @@ Future<void> bootstrap() async {
         ref.onDispose(service.dispose);
         return service;
       }),
+      billingGatewayProvider.overrideWith((ref) => PlayBillingGateway()),
+      purchaseVerifierProvider.overrideWith((ref) => createPurchaseVerifier()),
       pdfEngineOverride(),
     ],
   );
 
   // Housekeeping must never delay or break startup.
   unawaited(container.read(storageMaintenanceProvider).runStartupCleanup());
+  // Premium is confirmed with Google Play first, so a subscriber never sees
+  // the consent form or an ad.
+  unawaited(
+    container
+        .read(billingServiceProvider)
+        .start()
+        .whenComplete(container.read(adsServiceProvider).initialize),
+  );
 
   FlutterError.onError = (details) {
     logger.error('app.flutter_error');

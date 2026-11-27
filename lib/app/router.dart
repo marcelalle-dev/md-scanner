@@ -13,6 +13,7 @@ import 'package:md_scanner/features/ocr/presentation/ocr_screen.dart';
 import 'package:md_scanner/features/pdf_tools/presentation/pdf_tool.dart';
 import 'package:md_scanner/features/pdf_tools/presentation/pdf_tool_screen.dart';
 import 'package:md_scanner/features/pdf_tools/presentation/tools_screen.dart';
+import 'package:md_scanner/features/premium/presentation/premium_screen.dart';
 import 'package:md_scanner/features/qr_scanner/presentation/code_generator_screen.dart';
 import 'package:md_scanner/features/qr_scanner/presentation/code_history_screen.dart';
 import 'package:md_scanner/features/qr_scanner/presentation/code_scanner_screen.dart';
@@ -69,6 +70,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.barcodeGenerator,
         builder: (context, state) => const CodeGeneratorScreen(qrMode: false),
+      ),
+      GoRoute(
+        path: AppRoutes.premium,
+        builder: (context, state) => const PremiumScreen(),
       ),
       GoRoute(
         path: AppRoutes.vault,

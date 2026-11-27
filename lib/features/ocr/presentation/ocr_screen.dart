@@ -18,6 +18,7 @@ import 'package:md_scanner/features/ocr/domain/text_recognition.dart';
 import 'package:md_scanner/features/ocr/l10n/generated/ocr_localizations.dart';
 import 'package:md_scanner/shared/models/document_entity.dart';
 import 'package:md_scanner/shared/providers/document_providers.dart';
+import 'package:md_scanner/shared/providers/entitlement.dart';
 import 'package:md_scanner/shared/repositories/document_repository.dart';
 
 const DocumentQuery _ocrSources = DocumentQuery(
@@ -186,6 +187,12 @@ class _OcrEditorState extends ConsumerState<_OcrEditor> {
 
   Future<void> _export({required bool docx}) async {
     final l10n = OcrLocalizations.of(context);
+    // DOCX export is a Premium feature; TXT export is always free.
+    if (docx &&
+        !ref.read(hasPremiumFeatureProvider(PremiumFeature.docxExport))) {
+      await context.push(AppRoutes.premium);
+      return;
+    }
     final result = docx
         ? await _service.exportDocx(widget.document.name, _text.text)
         : await _service.exportTxt(widget.document.name, _text.text);
@@ -313,9 +320,15 @@ class _OcrEditorState extends ConsumerState<_OcrEditor> {
                   onPressed: () => _export(docx: false),
                   child: Text(l10n.ocrExportTxt),
                 ),
-                OutlinedButton(
+                OutlinedButton.icon(
                   onPressed: () => _export(docx: true),
-                  child: Text(l10n.ocrExportDocx),
+                  icon:
+                      ref.watch(
+                        hasPremiumFeatureProvider(PremiumFeature.docxExport),
+                      )
+                      ? const Icon(Icons.article_outlined)
+                      : const PremiumBadge(compact: true),
+                  label: Text(l10n.ocrExportDocx),
                 ),
                 TextButton.icon(
                   onPressed: _recognize,

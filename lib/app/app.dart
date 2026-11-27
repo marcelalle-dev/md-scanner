@@ -6,6 +6,7 @@ import 'package:md_scanner/app/router.dart';
 import 'package:md_scanner/app/theme/app_theme.dart';
 import 'package:md_scanner/core/l10n/generated/core_localizations.dart';
 import 'package:md_scanner/features/ocr/l10n/generated/ocr_localizations.dart';
+import 'package:md_scanner/features/premium/l10n/generated/premium_localizations.dart';
 import 'package:md_scanner/features/qr_scanner/l10n/generated/qr_localizations.dart';
 import 'package:md_scanner/features/security/l10n/generated/security_localizations.dart';
 import 'package:md_scanner/shared/providers/app_settings.dart';
@@ -15,6 +16,7 @@ const List<LocalizationsDelegate<Object?>> appLocalizationsDelegates = [
   AppLocalizations.delegate,
   CoreLocalizations.delegate,
   OcrLocalizations.delegate,
+  PremiumLocalizations.delegate,
   QrLocalizations.delegate,
   SecurityLocalizations.delegate,
   ...GlobalMaterialLocalizations.delegates,

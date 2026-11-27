@@ -8,6 +8,7 @@ import 'package:md_scanner/app/theme/app_tokens.dart';
 import 'package:md_scanner/core/errors/result.dart';
 import 'package:md_scanner/core/widgets/feedback.dart';
 import 'package:md_scanner/core/widgets/state_views.dart';
+import 'package:md_scanner/features/ads/presentation/ad_banner_slot.dart';
 import 'package:md_scanner/features/document_vault/presentation/document_actions.dart';
 import 'package:md_scanner/shared/models/document_entity.dart';
 import 'package:md_scanner/shared/providers/document_providers.dart';
@@ -115,6 +116,7 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen> {
           ),
         ],
       ),
+      bottomNavigationBar: const AdBannerSlot(),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => importDocument(context, ref),
         icon: const Icon(Icons.upload_file_outlined),

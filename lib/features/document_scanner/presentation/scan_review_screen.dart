@@ -12,6 +12,7 @@ import 'package:md_scanner/core/l10n/failure_messages.dart';
 import 'package:md_scanner/core/widgets/dialogs.dart';
 import 'package:md_scanner/core/widgets/feedback.dart';
 import 'package:md_scanner/core/widgets/progress.dart';
+import 'package:md_scanner/features/ads/data/ads_service.dart';
 import 'package:md_scanner/features/document_scanner/presentation/scan_session_controller.dart';
 import 'package:md_scanner/features/document_scanner/presentation/scanner_screen.dart';
 import 'package:md_scanner/features/image_editor/domain/image_adjustments.dart';
@@ -105,6 +106,7 @@ class _ScanReviewScreenState extends ConsumerState<ScanReviewScreen> {
       switch (result) {
         case Success(:final value):
           context.showMessage(core.savedToLibrary);
+          ref.read(adsServiceProvider).taskCompleted();
           context.go(AppRoutes.documents);
           await context.push(AppRoutes.documentDetails(value.id));
         case Err(:final failure):

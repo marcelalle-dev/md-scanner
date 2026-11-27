@@ -1,15 +1,20 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:md_scanner/app/configuration/app_config.dart';
 import 'package:md_scanner/app/l10n/generated/app_localizations.dart';
+import 'package:md_scanner/app/routes.dart';
 import 'package:md_scanner/core/errors/result.dart';
 import 'package:md_scanner/core/storage/file_storage.dart';
 import 'package:md_scanner/core/utils/formatters.dart';
 import 'package:md_scanner/core/widgets/cards.dart';
 import 'package:md_scanner/core/widgets/feedback.dart';
 import 'package:md_scanner/core/widgets/progress.dart';
+import 'package:md_scanner/features/ads/data/ads_service.dart';
+import 'package:md_scanner/features/premium/l10n/generated/premium_localizations.dart';
 import 'package:md_scanner/shared/providers/app_settings.dart';
+import 'package:md_scanner/shared/providers/entitlement.dart';
 import 'package:md_scanner/shared/repositories/document_repository.dart';
 import 'package:md_scanner/shared/services/backup_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -113,6 +118,7 @@ class ProfileScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.only(bottom: 24),
         children: [
+          const _PremiumTile(),
           _Section(l10n.profileAppearance),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -210,6 +216,38 @@ class ProfileScreen extends ConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _PremiumTile extends ConsumerWidget {
+  const _PremiumTile();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = PremiumLocalizations.of(context);
+    final premium = ref.watch(isPremiumProvider);
+    final ads = ref.watch(adsServiceProvider);
+    return Column(
+      children: [
+        ListTile(
+          leading: const Icon(Icons.workspace_premium_outlined),
+          title: Text(premium ? l10n.premiumEntryActive : l10n.premiumEntry),
+          subtitle: premium ? null : Text(l10n.premiumEntryHint),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: () => context.push(AppRoutes.premium),
+        ),
+        ValueListenableBuilder<bool>(
+          valueListenable: ads.privacyOptionsRequired,
+          builder: (context, required, _) => required
+              ? ListTile(
+                  leading: const Icon(Icons.ads_click_outlined),
+                  title: Text(l10n.adsPrivacy),
+                  onTap: ads.showPrivacyOptions,
+                )
+              : const SizedBox.shrink(),
+        ),
+      ],
     );
   }
 }

@@ -7,6 +7,7 @@ import 'package:md_scanner/app/theme/app_tokens.dart';
 import 'package:md_scanner/core/widgets/cards.dart';
 import 'package:md_scanner/core/widgets/feedback.dart';
 import 'package:md_scanner/core/widgets/state_views.dart';
+import 'package:md_scanner/features/ads/presentation/ad_banner_slot.dart';
 import 'package:md_scanner/features/document_vault/presentation/document_actions.dart';
 import 'package:md_scanner/features/document_vault/presentation/documents_screen.dart';
 import 'package:md_scanner/shared/models/document_entity.dart';
@@ -25,6 +26,7 @@ class HomeScreen extends ConsumerWidget {
     final recent = ref.watch(provider);
 
     return Scaffold(
+      bottomNavigationBar: const AdBannerSlot(),
       body: SafeArea(
         child: ListView(
           padding: AppSpacing.screen,

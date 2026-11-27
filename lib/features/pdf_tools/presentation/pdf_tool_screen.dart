@@ -13,6 +13,7 @@ import 'package:md_scanner/core/widgets/cards.dart';
 import 'package:md_scanner/core/widgets/dialogs.dart';
 import 'package:md_scanner/core/widgets/feedback.dart';
 import 'package:md_scanner/core/widgets/progress.dart';
+import 'package:md_scanner/features/ads/data/ads_service.dart';
 import 'package:md_scanner/features/pdf_tools/domain/pdf_models.dart';
 import 'package:md_scanner/features/pdf_tools/presentation/pdf_tool.dart';
 import 'package:md_scanner/features/pdf_tools/presentation/pdf_tool_runner.dart';
@@ -170,6 +171,7 @@ class _PdfToolScreenState extends ConsumerState<PdfToolScreen> {
           _inputs.clear();
           _text.clear();
         });
+        ref.read(adsServiceProvider).taskCompleted();
         final messenger = ScaffoldMessenger.of(context);
         final router = GoRouter.of(context);
         messenger
