@@ -16,22 +16,24 @@ MD SCANNER transforme un smartphone en scanner de documents : capture avec déte
 
 Cette section fait foi.
 
-> **Aucun test sur appareil réel n'a encore été effectué.** La logique est couverte par 342 tests automatisés exécutés sur poste de développement, et l'APK se construit. La caméra, le scanner et l'OCR de Google, la biométrie, les achats et les publicités ne s'exécutent que sur un téléphone : ils restent à valider.
+> **Aucun test sur appareil réel n'a encore été effectué.** La logique est couverte par 353 tests automatisés (plus 93 pour le backend) exécutés sur poste de développement, et l'APK se construit. La caméra, le scanner et l'OCR de Google, la biométrie, les achats et les publicités ne s'exécutent que sur un téléphone : ils restent à valider.
 
 ### Terminé
 
 | Domaine | Contenu | Vérification |
 | --- | --- | --- |
-| Numérisation | Scanner Google ML Kit, import de photos avec détection et redressement, 5 modes de capture, 6 filtres, gestion multipage, export PDF et JPG | Tests hôte |
-| Moteur PDF et 10 outils | Images ↔ PDF, fusion, extraction, compression, rotation, protection AES-256, déverrouillage, filigrane, numérotation | Tests hôte, sorties relues par PDFium |
+| Numérisation | Scanner Google ML Kit, import de photos avec détection et redressement, recadrage manuel des quatre coins, 5 modes de capture, 6 filtres, gestion multipage, export PDF et JPG | Tests hôte |
+| Moteur PDF et 12 outils | Images ↔ PDF, fusion, extraction, compression, rotation, protection AES-256, déverrouillage, filigrane, numérotation, ajout de texte, signature manuscrite ; impression | Tests hôte du moteur, sorties relues par PDFium ; signature et impression non exécutées |
 | OCR | Reconnaissance hors ligne (alphabet latin), PDF page par page, correction manuelle, recherche insensible aux accents, export TXT et DOCX | Tests hôte ; moteur ML Kit non exécuté |
 | QR codes et codes-barres | Lecture caméra et image (QR, Data Matrix, Aztec, PDF417, EAN, UPC, Code 128, Code 39), lampe, zoom, analyse de sécurité des liens, historique, génération avec export PNG | Tests hôte ; caméra non exécutée |
-| Bibliothèque | SQLite, import, recherche (noms et texte reconnu), tri, favoris, aperçu, partage, corbeille, sauvegarde | Tests hôte |
-| Coffre-fort | Code PIN (empreinte Argon2id, tentatives limitées), biométrie, chiffrement AES-256-GCM par blocs, verrouillage à la mise en arrière-plan, protection contre les captures d'écran | Tests hôte (chiffrement, falsification) ; biométrie et Keystore non exécutés |
+| Bibliothèque | SQLite, import, dossiers imbriqués, étiquettes, recherche (noms et texte reconnu), tri, favoris, aperçu, partage, corbeille, sauvegarde | Tests hôte |
+| Pièces d'identité | Capture recto et verso, lecture des zones MRZ (passeports et cartes, clés de contrôle vérifiées), repérage des dates et numéros à défaut, export PDF ; rien n'est conservé sans enregistrement | Tests hôte de l'analyse ; capture non exécutée |
+| Coffre-fort et verrouillage | Code PIN (empreinte Argon2id, tentatives limitées), biométrie, chiffrement AES-256-GCM par blocs, verrouillage à la mise en arrière-plan, protection contre les captures d'écran, verrouillage facultatif de toute l'application | Tests hôte (chiffrement, falsification) ; biométrie et Keystore non exécutés |
 | Premium | Google Play Billing : offres et prix lus sur le Play Store, vérification avant octroi, restauration, révocation, tolérance hors ligne de 3 jours | Tests hôte avec doublure du Play Store |
-| Publicités | AdMob après consentement (UMP), bannière dans son propre emplacement, interstitiel plafonné après une tâche terminée, rien pour les abonnés | Politique testée ; SDK non exécuté |
+| Publicités | AdMob après consentement (UMP), bannière dans son propre emplacement, interstitiel plafonné après une tâche terminée, annonce avec récompense pour un export DOCX ponctuel, rien pour les abonnés | Politique testée ; SDK non exécuté |
 | Assistant | Repérage local des dates et montants ; client du backend IA avec consentement explicite | Tests hôte avec faux serveur |
-| Application | Navigation à 5 entrées, thèmes, français et anglais, icône adaptative | Tests de widgets |
+| Application | Introduction au premier lancement, navigation à 5 entrées, thèmes, français et anglais, icône adaptative | Tests de widgets |
+| Backend | Relais vers l'API Claude et vérification des achats Google Play (Cloudflare Workers), quotas et budget global | 93 tests avec doublures ; jamais déployé |
 | CI/CD | Workflows `ci`, `android-build`, `release` | Exécutés sur GitHub Actions |
 
 ### En attente d'éléments externes
@@ -40,18 +42,15 @@ Cette section fait foi.
 | --- | --- |
 | Achats Premium | Produits à créer dans la Play Console ; fonctionne seulement pour une version installée depuis Google Play |
 | Publicités réelles | Identifiants AdMob ; sans eux, seules des annonces de test s'affichent |
-| Assistant IA | Backend à terminer et déployer (`backend/` est une ébauche non versionnée) ; sans lui, l'assistant s'affiche comme indisponible |
+| Assistant IA | Backend à déployer avec vos clés ([backend/README.md](backend/README.md)) ; sans lui, l'assistant s'affiche comme indisponible |
 | Vérification serveur des achats | Même backend |
 | Publication | Keystore d'upload, compte développeur |
 
 ### Non réalisé
 
-- Scanner de pièces d'identité.
-- Dossiers et étiquettes dans l'interface (présents dans le moteur).
-- Recadrage manuel des coins, réglages fins de luminosité et de contraste.
-- Signature manuscrite et texte libre sur PDF, impression.
-- Annonce avec récompense.
-- Onboarding, verrouillage de l'application entière, effacement global des données depuis l'application.
+- Réglages fins de luminosité et de contraste dans l'interface (présents dans le moteur).
+- Placement libre de la signature et du texte sur la page (positions prédéfinies seulement).
+- Effacement global des données depuis l'application.
 - Tests d'intégration sur appareil et tests de performance.
 
 L'application n'est **pas publiée** sur Google Play.
@@ -77,7 +76,8 @@ lib/
   features/
     document_scanner/  image_editor/  pdf_tools/  ocr/  qr_scanner/
     document_vault/    security/      premium/    ads/  ai_assistant/
-    home/  settings/
+    id_scanner/        onboarding/    home/       settings/
+backend/      serveur Cloudflare Workers (assistant IA, vérification des achats)
 ```
 
 ## Documentation

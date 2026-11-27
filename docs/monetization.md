@@ -50,9 +50,9 @@ Suppression des publicités, export DOCX, couleurs personnalisées des QR codes,
 - Sans identifiants fournis au build, les blocs de **test** officiels de Google sont utilisés. Aucun identifiant de production n'a été inventé.
 - Un échec de chargement n'affecte jamais l'application.
 
-Non réalisé : l'annonce avec récompense.
+- **Annonce avec récompense** : un utilisateur gratuit peut regarder une annonce pour exporter un document en DOCX une fois. L'export n'a lieu que si la récompense est réellement accordée par le SDK.
 
-Variables de build : `ADMOB_BANNER_UNIT_ID`, `ADMOB_INTERSTITIAL_UNIT_ID`, `ADS_ENABLED`, et `ADMOB_APP_ID` pour le manifest (voir [installation.md](installation.md)).
+Variables de build : `ADMOB_BANNER_UNIT_ID`, `ADMOB_INTERSTITIAL_UNIT_ID`, `ADMOB_REWARDED_UNIT_ID`, `ADS_ENABLED`, et `ADMOB_APP_ID` pour le manifest (voir [installation.md](installation.md)).
 
 ## À fournir par l'éditeur
 

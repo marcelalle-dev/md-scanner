@@ -18,6 +18,7 @@ MD SCANNER est édité par MarcelAlle.Dev. Cette page décrit ce que fait réell
 | Photos, documents numérisés, PDF | Numérisation, traitement d'image, outils PDF |
 | Texte reconnu (OCR) | Affichage, correction, recherche dans la bibliothèque |
 | QR codes et codes-barres lus ou créés | Historique local, effaçable |
+| Pièces d'identité | Images de travail supprimées à la fermeture de l'écran ; informations lues affichées mais jamais enregistrées. Seul le PDF que vous choisissez d'enregistrer est conservé |
 | Noms des documents, favoris, préférences | Organisation et personnalisation |
 | Code PIN du coffre-fort | Seule une empreinte irréversible est conservée, dans le stockage sécurisé du système |
 | Documents du coffre-fort | Chiffrés (AES-256) ; la clé reste dans l'Android Keystore de l'appareil |

@@ -48,6 +48,14 @@ Les fichiers de travail sont supprimés à la fin de chaque opération, y compri
 - **Biométrie** facultative, comme raccourci du code PIN (invite système AndroidX, biométrie seule).
 - Les documents du coffre sont exclus des sauvegardes et retirés de la bibliothèque, vignette comprise.
 
+### Verrouillage de l'application
+
+Facultatif (menu du coffre-fort). Lorsqu'il est activé et qu'un code PIN existe, un écran de saisie recouvre toute l'application au lancement et à chaque retour d'arrière-plan ; il est placé au-dessus de la navigation, de sorte qu'aucun écran n'est atteignable avant le déverrouillage.
+
+### Pièces d'identité
+
+Les images d'une pièce d'identité sont des copies de travail supprimées dès la fermeture de l'écran ; rien n'est conservé sans enregistrement explicite. Les captures d'écran sont bloquées sur cet écran. Les informations lues ne sont ni stockées ni journalisées, et l'application ne se prononce jamais sur l'authenticité d'un document.
+
 ### Liens scannés
 
 Un lien lu dans un QR code n'est jamais ouvert automatiquement. L'adresse complète est affichée avec un avis établi localement (http sans chiffrement, adresse IP, caractères trompeurs, identifiant caché, lien raccourci, téléchargement de programme…). Les schémas capables d'exécuter du code ou de lire des données locales (`javascript:`, `data:`, `file:`, `intent:`, `content:`…) sont bloqués.
@@ -64,7 +72,7 @@ Le jeton d'achat n'est jamais écrit sur disque : seule son empreinte SHA-256 l'
 - Sans serveur de vérification, les achats sont vérifiés sur l'appareil : les remboursements ne sont détectés que lorsque Google Play cesse de renvoyer l'achat.
 - Aucun audit de sécurité externe n'a été réalisé, et aucun essai sur appareil.
 - Le plugin `cryptography_flutter`, qui accélère AES-GCM sur Android, utilise un mode de build Kotlin que de futures versions de Flutter refuseront ; il faudra le mettre à jour ou le remplacer.
-- Non réalisé : verrouillage de l'application entière, effacement global des données depuis l'application.
+- Non réalisé : effacement global des données depuis l'application.
 
 ## Signaler une faille
 
